@@ -1,0 +1,140 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 20px;
+  width: 600px;
+  height: 650px;
+  background: linear-gradient(135deg, #8e44ad, #3498db); /* Gradient background */
+  padding-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  color: #fff; /* Text color */
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.text {
+  color: #fff; /* Heading text color */
+  font-size: 48px;
+  font-weight: 700;
+}
+
+/* Heading underline */
+
+@keyframes underlineAnimation {
+  0% {
+    width: 0;
+    background: #fff;
+    opacity: 0.5;
+  }
+  50% {
+    width: 61px;
+    background: #e24806;
+    opacity: 1;
+  }
+  100% {
+    width: 0;
+    background: #fff;
+    opacity: 0.5;
+  }
+}
+
+.underline {
+  width: 61px;
+  height: 6px;
+  background: #fff;
+  border-radius: 9px;
+  animation: underlineAnimation 2s ease infinite;
+}
+
+.inputs {
+  margin-top: 55px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 480px;
+  height: 80px;
+  background: #ecf0f1; /* Light background color for input fields */
+  border-radius: 6px;
+}
+
+.input img {
+  margin: 0px 30px;
+}
+
+.input input {
+  height: 50px;
+  width: 400px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #34495e; /* Text color for input fields */
+  font-size: 19px;
+}
+
+.forgot-password {
+  padding-left: 62px;
+  margin-top: 27px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.forgot-password span {
+  color: #e67e22;
+  cursor: pointer;
+}
+
+/* Submit options */
+
+.submit-container {
+  display: flex;
+  gap: 30px;
+  margin: 85px;
+}
+
+.submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 220px;
+  height: 59px;
+  background: #e74c3c; /* Red button color */
+  border-radius: 50px;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gray {
+  background: #bdc3c7; /* Light gray background for inactive buttons */
+  color: #7f8c8d;
+}
+
+.submit-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 220px;
+  background: #3498db; /* Blue button color */
+  border-radius: 20px;
+  font-size: 26px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: 240px;
+}

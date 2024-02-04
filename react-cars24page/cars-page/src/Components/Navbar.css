@@ -1,0 +1,64 @@
+/* Navbar.css */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #2c3e50, #000);
+  color: #fff;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo img {
+  width: 50px;
+  height: auto;
+}
+
+.heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 auto;
+  color: #fff;
+  font-style: italic; /* Add italic font style */
+}
+
+.nav-links {
+  display: flex;
+  margin-left: -190px;
+}
+
+.nav-link {
+  margin-right: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #ffcc00;
+}
+
+.carlogoimage {
+  max-width: 50px;
+  height: 50px;
+}
+
+.about-container,
+.contact-container {
+  padding: 20px;
+  margin: 20px;
+  background-color: #fff;
+  color: #000;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: none;
+}

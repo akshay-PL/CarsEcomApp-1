@@ -1,0 +1,69 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  background: linear-gradient(45deg, #3498db, #2ecc71); /* Updated gradient colors */
+  padding: 20px;
+  margin-top: 50px; /* Adjusted margin-top for lower positioning */
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Increased box shadow */
+}
+
+.container > div[class^="car"] {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding: 20px; /* Increased padding for more space */
+  text-align: center;
+  transition: background-color 0.3s ease;
+  border-radius: 15px;
+  margin-top: 20px; /* Adjusted margin for better spacing */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.container > div[class^="car"]:hover {
+  background: linear-gradient(45deg, #3498db, #2ecc71); /* Gradient background on hover */
+  color: #ffffff;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.container > div[class^="car"] img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px; /* Increased border-radius for a softer look */
+}
+
+.container > div[class^="car"] .carDetails {
+  text-align: center;
+  padding: 20px;
+}
+
+.container > div[class^="car"] .carDetails h3,
+.container > div[class^="car"] .carDetails p {
+  margin: 10px 0;
+  font-weight: bold;
+  color: #333333;
+}
+
+.container > div[class^="car"] .carDetails .buyButton {
+  margin-top: 15px;
+  padding: 15px 30px; /* Adjusted button padding for better proportions */
+  cursor: pointer;
+  background-color: #e74c3c;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px; /* Rounded button corners */
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.container > div[class^="car"] .carDetails .buyButton:hover {
+  background-color: #c0392b;
+}
+
+.container > div[class^="car"] .carDetails .info {
+  font-style: italic;
+  color: #555555;
+  font-size: 14px;
+}
