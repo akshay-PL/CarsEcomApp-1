@@ -6,6 +6,7 @@ const sql = require('mssql');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const swaggerJsdoc = require('swagger-jsdoc');
+const bcrypt=require("bcrypt");
 //cors error
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
@@ -247,15 +248,23 @@ app.get('/usercredentials/:id', async (req, res) => {
 
 
 
-app.post('/usercredentials', async (req, res) => {  
+app.post('/usercredentials', async (req, res) => {
+  const { userId, password } = req.body;
+
   try {
-    const result = await sql.query`INSERT INTO User_credential (userId, password) VALUES (${req.body.userId}, ${req.body.password})`;
+    // Hash the password before storing it in the database
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const result = await sql.query`INSERT INTO User_credential (userId, password, createdAt, createdBy) 
+                                    VALUES (${userId}, ${hashedPassword}, GETDATE(), ${createdBy})`;
+
     res.status(201).json({ message: 'User credentials created successfully' });
   } catch (error) {
     console.error('Error creating user credentials:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 app.put('/usercredentials/:id', async (req, res) => {
@@ -569,17 +578,6 @@ app.delete('/orderitems/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 

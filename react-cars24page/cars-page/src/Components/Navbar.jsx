@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import carlogo from './Assets/carlogo.jpg';
 import './Navbar.css';
 
+
 const Navbar = () => {
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ const Navbar = () => {
         <div className="nav-link" onClick={() => handleNavigation('/contact')}>
           Contact
         </div>
-        <div className="nav-link" onClick={handleLogout}>
+        <div className="nav-link logout-link" onClick={handleLogout}>
           Logout
         </div>
       </div>

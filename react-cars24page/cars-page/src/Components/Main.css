@@ -23,10 +23,12 @@
 }
 
 .container > div[class^="car"]:hover {
-  background: linear-gradient(45deg, #3498db, #2ecc71); /* Gradient background on hover */
-  color: #ffffff;
-  transition: background 0.3s ease, color 0.3s ease;
+  background: rgba(255, 255, 255, 0.3); /* Semi-transparent white background on hover */
+  color: #333333;
+  backdrop-filter: blur(10px); /* Apply blur for a glass-like effect */
+  transition: background 0.3s ease, color 0.3s ease, backdrop-filter 0.3s ease;
 }
+
 
 .container > div[class^="car"] img {
   max-width: 100%;

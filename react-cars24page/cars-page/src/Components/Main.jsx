@@ -113,12 +113,10 @@ const Main = () => {
             <h3>{car.brand}</h3>
             <img src={getCarImage(car.id)} alt="" className={`car${car.id}-image`} />
             <div>
-            <p style={{ fontSize: '16px', color: '#ffffff', fontWeight: 'bold' }}>Brand: {car.brand}</p>
-<p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Type: {car.type}</p>
-<p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Model: {car.model}</p>
-<p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Price: {car.price}</p>
-
-
+              <p style={{ fontSize: '16px', color: '#ffffff', fontWeight: 'bold' }}>Brand: {car.brand}</p>
+              <p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Type: {car.type}</p>
+              <p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Model: {car.model}</p>
+              <p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Price: {car.price}</p>
               <button
                 style={{
                   background: '#e74c3c',
@@ -155,7 +153,7 @@ const Main = () => {
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
         >
-          Previous
+          &#8592; {/* Unicode arrow character for left arrow */}
         </button>
         <span style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 10px' }}>{currentPage}</span>
         <button
@@ -172,7 +170,7 @@ const Main = () => {
           onClick={handleNextPage}
           disabled={currentPage === totalPageCount}
         >
-          Next
+          &#8594; {/* Unicode arrow character for right arrow */}
         </button>
       </div>
     </div>

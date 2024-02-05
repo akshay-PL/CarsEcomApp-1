@@ -5,12 +5,18 @@
   margin-top: 20px;
   width: 600px;
   height: 650px;
-  background: linear-gradient(135deg, #8e44ad, #3498db); /* Gradient background */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2)); /* Glass-like gradient background */
   padding-bottom: 30px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  color: #fff; /* Text color */
+  color: #333; /* Text color, adjust as needed */
 }
+
+/* ... (rest of the styles remain the same) */
+
+
+/* ... (rest of the styles remain the same) */
+
 
 .header {
   display: flex;
@@ -22,7 +28,7 @@
 }
 
 .text {
-  color: #fff; /* Heading text color */
+  color: #e24806; /* Heading text color */
   font-size: 48px;
   font-weight: 700;
 }
@@ -36,7 +42,7 @@
     opacity: 0.5;
   }
   50% {
-    width: 61px;
+    width: 200px;
     background: #e24806;
     opacity: 1;
   }
@@ -128,13 +134,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 120px;
-  height: 220px;
-  background: #3498db; /* Blue button color */
+  width: 180px; /* This is the width specified for the button */
+  height: 110px;
+  background: #e24806; 
   border-radius: 20px;
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 700;
   cursor: pointer;
-  margin-top: 10px;
-  margin-left: 240px;
+  margin-top: 30px;
+  margin-left: 210px;
 }

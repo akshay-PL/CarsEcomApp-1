@@ -1,58 +1,67 @@
 // Login.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import './Login.css';
+import axios from 'axios';
+
 import email_icon from './Assets/email.png';
 import password_icon from './Assets/password.png';
 import user_icon from './Assets/person.png';
-import Main from './Main'; // Import Main component
-import { useNavigate } from 'react-router-dom';
+import Main from './Main';
 
 const LoginSignup = () => {
+  const { userId, usernameParam, emailParam } = useParams();
   const navigate = useNavigate();
   const [action, setAction] = useState('Login');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [storedEmail, setStoredEmail] = useState('akshay@gmail.com');
-  const [storedPassword, setStoredPassword] = useState('password123');
   const [showMain, setShowMain] = useState(false);
-  const [submitClicked, setSubmitClicked] = useState(false);
+  const [signupErrorMessage, setSignupErrorMessage] = useState('');
 
-  const handleSignup = () => {
-    console.log('Signup clicked');
-  };
+  const handleLogin = async () => {
+    try {
+        if (!email || !password) {
+            console.log('Login failed: Email and Password are required');
+            return;
+        }
 
-  const handleLogin = () => {
-    console.log('Login clicked');
-  };
+        // Make API call to fetch user data
+        const response = await axios.get('http://localhost:3000/users');
+
+        // Log the entire response for debugging purposes
+        console.log(response.data);
+
+        // Check if the entered email and password match any user's data
+        const userDataArray = response.data;
+        const user = userDataArray.find((user) => user.email === email && user.username === password);
+
+        // Log user data for debugging purposes
+        console.log('User Data:', user);
+
+        if (user) {
+            console.log('Login Successful');
+            setShowMain(true);
+            navigate('/main'); // Navigate to '/main' upon successful login
+        } else {
+            console.log('Login failed: Invalid credentials');
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        setShowMain(false);
+    }
+};
+
+
+
+  
 
   const handleForgotPassword = () => {
     console.log('Forgot Password clicked');
   };
 
-  const handleSubmitButton = () => {
-    handleLoginuser();
-  };
-
-  const handleLoginuser = () => {
-    if (action === 'Login') {
-      if (email === storedEmail && password === storedPassword) {
-        console.log('Login Successful');
-        setShowMain(true);
-        navigate('/main'); // Navigate to '/main' on successful login
-      } else if (email === storedEmail) {
-        console.log('Email is correct, password invalid');
-      } else if (password === storedPassword) {
-        console.log('Password is correct, email invalid');
-      } else {
-        console.log('Invalid credentials');
-      }
-    } else {
-      console.log('Handling user for signup action - information not found');
-    }
-    setSubmitClicked(true);
-  };
-
   const resetFields = () => {
+    setUsername('');
     setEmail('');
     setPassword('');
   };
@@ -68,14 +77,18 @@ const LoginSignup = () => {
       ) : (
         <div className="Container">
           <div className="header">
-            <div className="text">{action}</div>
-            <div className="underline"></div>
+            <div className="text">CarsEcom<div className="underline"></div></div>
           </div>
           <div className="inputs">
             {action === 'Sign up' && (
               <div className="input">
                 <img src={user_icon} alt="" />
-                <input type="text" placeholder="Name" />
+                <input
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
             )}
             <div className="input">
@@ -103,24 +116,37 @@ const LoginSignup = () => {
             </p>
           )}
 
-          {/* Submit Button */}
-          <div
-            className="submit-button"
-            onClick={() => {
-              handleSubmitButton();
-              resetFields();
-            }}
-          >
-            {action === 'Sign up' ? 'Set Login' : 'Login'}
-          </div>
+          {signupErrorMessage && <p className="error-message">{signupErrorMessage}</p>}
 
-          {/* Login/signup button */}
+          {/* Submit Buttons */}
+          {action === 'Sign up' ? (
+            <div
+              className="submit-button"
+              onClick={() => {
+                handleSignup();
+                resetFields();
+              }}
+            >
+              Set Login
+            </div>
+          ) : (
+            <div
+              className="submit-button"
+              onClick={() => {
+                handleLogin();
+                resetFields();
+              }}
+            >
+              Login
+            </div>
+          )}
+
+          {/* Login/signup buttons */}
           <div className="submit-container">
             <div
               className={action === 'Login' ? 'submit gray' : 'submit'}
               onClick={() => {
                 setAction('Sign up');
-                handleSignup();
                 resetFields();
               }}
             >
@@ -130,7 +156,6 @@ const LoginSignup = () => {
               className={action === 'Sign up' ? 'submit gray' : 'submit'}
               onClick={() => {
                 setAction('Login');
-                handleLogin();
               }}
             >
               Sign in
