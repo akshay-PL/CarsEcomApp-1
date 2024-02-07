@@ -1590,3 +1590,157 @@
  *             error:
  *               type: string
  */
+
+
+
+  /**
+ * @swagger
+ * /signup:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: User Signup
+ *     description: Register a new user with username, email, and password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The username of the user.
+ *               email:
+ *                 type: string
+ *                 description: The email of the user.
+ *               password:
+ *                 type: string
+ *                 description: The password of the user.
+ *     responses:
+ *       201:
+ *         description: User successfully registered
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: User created successfully.
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Username, Email, or password missing.
+ *             example:
+ *               error: "Username or Email or password missing"
+ *       409:
+ *         description: Conflict
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: User already exists.
+ *             example:
+ *               error: "User already exists"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Something went wrong during signup process.
+ *             example:
+ *               error: "Something went wrong"
+ */
+
+
+
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Authenticate user
+ *     description: Authenticate a user by email and password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The email of the user.
+ *               password:
+ *                 type: string
+ *                 description: The password of the user.
+ *     responses:
+ *       200:
+ *         description: Successfully authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   description: The authenticated user's details (excluding password).
+ *                 auth:
+ *                   type: string
+ *                   description: JWT token for authentication.
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Email or password missing.
+ *             example:
+ *               error: "Email or password missing"
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: No User found or incorrect email/password combination.
+ *             example:
+ *               error: "No User found or incorrect email/password combination"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Something went wrong during authentication.
+ *             example:
+ *               error: "Something went wrong during authentication"
+ */
+
+
+

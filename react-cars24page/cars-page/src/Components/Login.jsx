@@ -21,40 +21,59 @@ const LoginSignup = () => {
 
   const handleLogin = async () => {
     try {
-        if (!email || !password) {
-            console.log('Login failed: Email and Password are required');
-            return;
-        }
-
-        // Make API call to fetch user data
-        const response = await axios.get('http://localhost:3000/users');
-
-        // Log the entire response for debugging purposes
-        console.log(response.data);
-
-        // Check if the entered email and password match any user's data
-        const userDataArray = response.data;
-        const user = userDataArray.find((user) => user.email === email && user.username === password);
-
-        // Log user data for debugging purposes
-        console.log('User Data:', user);
-
-        if (user) {
-            console.log('Login Successful');
-            setShowMain(true);
-            navigate('/main'); // Navigate to '/main' upon successful login
-        } else {
-            console.log('Login failed: Invalid credentials');
-        }
-    } catch (error) {
-        console.error('Error during login:', error);
-        setShowMain(false);
-    }
-};
-
-
-
+      // Clear previous error messages
+      setSignupErrorMessage('');
   
+      if (!email || !password) {
+        setSignupErrorMessage('Email and password are required');
+        alert('Login failed. Please use correct credentials.');
+        return;
+      }
+  
+      const response = await axios.post('http://localhost:3000/login', {
+        email,
+        password,
+      });
+  
+      // Check HTTP status code
+      if (response.status === 200) {
+        // Login successful
+        navigate('/main');
+      } else {
+        // Login failed
+        alert('Please enter valid email and password');
+        console.log('Please enter valid email or password');
+        console.error('Login failed:', response.data.error);
+        // Handle error, show error message to the user, etc.
+        setSignupErrorMessage('An error occurred during login');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      // Handle network errors
+      setSignupErrorMessage('An error occurred during login');
+      alert('Login failed. Please use correct credentials.');
+    }
+  };
+  
+  
+  
+  const handleSignup = async () => {
+    try {
+      // Make API call to signup
+      const response = await axios.post('http://localhost:3000/signup', {
+        username,
+        email,
+        password,
+      });
+
+      console.log('Signup Successful:', response.data);
+
+      // You might want to do something after successful signup
+    } catch (error) {
+      console.error('Error during signup:', error);
+      alert('Signup failed. Please try again.');
+    }
+  };
 
   const handleForgotPassword = () => {
     console.log('Forgot Password clicked');
@@ -121,7 +140,7 @@ const LoginSignup = () => {
           {/* Submit Buttons */}
           {action === 'Sign up' ? (
             <div
-              className="submit-button"
+              className="submit-button signup" // Add appropriate class for signup button
               onClick={() => {
                 handleSignup();
                 resetFields();

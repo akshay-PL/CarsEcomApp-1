@@ -14,10 +14,6 @@
 
 /* ... (rest of the styles remain the same) */
 
-
-/* ... (rest of the styles remain the same) */
-
-
 .header {
   display: flex;
   flex-direction: column;
@@ -143,4 +139,11 @@
   cursor: pointer;
   margin-top: 30px;
   margin-left: 210px;
+}
+
+/* Add cursor pointer on hover for signup, signin, login, and set login buttons */
+.submit-button.signup:hover,
+.submit-button.set-login:hover,
+.submit-button.sign-in:hover {
+  cursor: pointer;
 }
