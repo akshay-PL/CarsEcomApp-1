@@ -1,18 +1,19 @@
-.Container {
+/* Login.css */
+
+.container {
   display: flex;
   flex-direction: column;
   margin: auto;
-  margin-top: 20px;
-  width: 600px;
-  height: 650px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2)); /* Glass-like gradient background */
-  padding-bottom: 30px;
+  margin-top: 95px; /* Increased top margin for better alignment */
+  width: 500px; /* Reduced width */
+  max-width: 90%; /* Ensure it doesn't exceed the screen width */
+  height: auto; /* Adjust height automatically based on content */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
+  padding: 20px; /* Reduced padding */
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  color: #333; /* Text color, adjust as needed */
+  color: #333;
 }
-
-/* ... (rest of the styles remain the same) */
 
 .header {
   display: flex;
@@ -24,37 +25,33 @@
 }
 
 .text {
-  color: #e24806; /* Heading text color */
+  color: #0682e8;
   font-size: 48px;
   font-weight: 700;
+  position: relative; /* Required for absolute positioning */
 }
 
-/* Heading underline */
+.underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 6px;
+  background: #0682e8; /* Change this to match your desired color */
+  border-radius: 9px;
+  animation: underlineAnimation 2s infinite; /* Use infinite to repeat the animation */
+}
 
 @keyframes underlineAnimation {
   0% {
     width: 0;
-    background: #fff;
-    opacity: 0.5;
   }
   50% {
-    width: 200px;
-    background: #e24806;
-    opacity: 1;
+    width: 100%;
   }
   100% {
     width: 0;
-    background: #fff;
-    opacity: 0.5;
   }
-}
-
-.underline {
-  width: 61px;
-  height: 6px;
-  background: #fff;
-  border-radius: 9px;
-  animation: underlineAnimation 2s ease infinite;
 }
 
 .inputs {
@@ -69,18 +66,18 @@
   align-items: center;
   margin: auto;
   width: 480px;
-  height: 80px;
+  height: 60px;
   background: #ecf0f1; /* Light background color for input fields */
   border-radius: 6px;
 }
 
 .input img {
-  margin: 0px 30px;
+  margin: 0px 20px;
 }
 
 .input input {
-  height: 50px;
-  width: 400px;
+  flex: 1;
+  height: 100%;
   background: transparent;
   border: none;
   outline: none;
@@ -89,61 +86,67 @@
 }
 
 .forgot-password {
-  padding-left: 62px;
+  padding-left: 2px;
   margin-top: 27px;
-  color: #fff;
+  color: #000000;
   font-size: 18px;
 }
 
 .forgot-password span {
-  color: #e67e22;
+  color: #0682e8;
   cursor: pointer;
 }
 
-/* Submit options */
-
-.submit-container {
-  display: flex;
-  gap: 30px;
-  margin: 85px;
+.error-message {
+  color: red;
+  margin-top: 10px;
 }
 
-.submit {
+.submit-button-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.submit-button,
+.toggle-action-button {
   width: 220px;
-  height: 59px;
-  background: #e74c3c; /* Red button color */
-  border-radius: 50px;
-  font-size: 19px;
-  font-weight: 700;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
-}
-
-.gray {
-  background: #bdc3c7; /* Light gray background for inactive buttons */
-  color: #7f8c8d;
 }
 
 .submit-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 180px; /* This is the width specified for the button */
-  height: 110px;
-  background: #e24806; 
-  border-radius: 20px;
-  font-size: 30px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 30px;
-  margin-left: 210px;
+  background-color: #0682e8;
+  color: white;
 }
 
-/* Add cursor pointer on hover for signup, signin, login, and set login buttons */
-.submit-button.signup:hover,
-.submit-button.set-login:hover,
-.submit-button.sign-in:hover {
+.submit-button.signup {
+  background-color: #0682e8;
+}
+
+.toggle-action-button {
+  background-color: #3498db;
+  color: white;
+}
+
+.toggle-action-button:hover {
+  background-color: #2980b9;
+}
+
+.toggle-main-button {
+  margin-top: 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
   cursor: pointer;
+}
+
+.toggle-main-button:hover {
+  background-color: #2980b9;
 }

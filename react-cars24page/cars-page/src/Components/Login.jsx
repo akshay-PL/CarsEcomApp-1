@@ -1,5 +1,5 @@
 // Login.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './Login.css';
 import axios from 'axios';
@@ -17,16 +17,14 @@ const LoginSignup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showMain, setShowMain] = useState(false);
-  const [signupErrorMessage, setSignupErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async () => {
     try {
-      // Clear previous error messages
-      setSignupErrorMessage('');
+      setErrorMessage('');
   
       if (!email || !password) {
-        setSignupErrorMessage('Email and password are required');
-        alert('Login failed. Please use correct credentials.');
+        setErrorMessage('Email and password are required');
         return;
       }
   
@@ -35,27 +33,15 @@ const LoginSignup = () => {
         password,
       });
   
-      // Check HTTP status code
       if (response.status === 200) {
-        // Login successful
         navigate('/main');
       } else {
-        // Login failed
-        alert('Please enter valid email and password');
-        console.log('Please enter valid email or password');
-        console.error('Login failed:', response.data.error);
-        // Handle error, show error message to the user, etc.
-        setSignupErrorMessage('An error occurred during login');
+        setErrorMessage('Invalid email or password');
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      // Handle network errors
-      setSignupErrorMessage('An error occurred during login');
-      alert('Login failed. Please use correct credentials.');
+      setErrorMessage('An error occurred during login');
     }
   };
-  
-  
   
   const handleSignup = async () => {
     try {
@@ -65,15 +51,26 @@ const LoginSignup = () => {
         email,
         password,
       });
-
-      console.log('Signup Successful:', response.data);
-
-      // You might want to do something after successful signup
+  
+      // Check if signup was successful
+      if (response.status === 200) {
+        // Display alert on successful signup
+        alert('User registered successfully!');
+        console.log('Signup Successful:', response.data);
+        
+        // You might want to do something after successful signup
+      } else {
+        // Display alert if signup failed
+        alert('Signup failed. Please try again.');
+        console.error('Signup failed:', response.data.error);
+      }
     } catch (error) {
+      // Display alert if an error occurred during signup
       console.error('Error during signup:', error);
       alert('Signup failed. Please try again.');
     }
   };
+  
 
   const handleForgotPassword = () => {
     console.log('Forgot Password clicked');
@@ -90,14 +87,15 @@ const LoginSignup = () => {
   };
 
   return (
-    <>
+    <div className="container">
       {showMain ? (
         <Main />
       ) : (
-        <div className="Container">
+        <div>
           <div className="header">
             <div className="text">CarsEcom<div className="underline"></div></div>
           </div>
+
           <div className="inputs">
             {action === 'Sign up' && (
               <div className="input">
@@ -129,59 +127,49 @@ const LoginSignup = () => {
               />
             </div>
           </div>
+
           {action === 'Login' && (
             <p className="forgot-password" onClick={handleForgotPassword}>
               Forgot Password? <span>Click here </span>
             </p>
           )}
 
-          {signupErrorMessage && <p className="error-message">{signupErrorMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-          {/* Submit Buttons */}
-          {action === 'Sign up' ? (
-            <div
-              className="submit-button signup" // Add appropriate class for signup button
-              onClick={() => {
-                handleSignup();
-                resetFields();
-              }}
-            >
-              Set Login
-            </div>
-          ) : (
-            <div
-              className="submit-button"
-              onClick={() => {
-                handleLogin();
-                resetFields();
-              }}
-            >
-              Login
-            </div>
-          )}
+          <div className="submit-button-container">
+            {action === 'Sign up' ? (
+              <button
+                className="submit-button signup"
+                onClick={() => {
+                  handleSignup();
+                  resetFields();
+                }}
+              >
+                Sign Up
+              </button>
+            ) : (
+              <button
+                className="submit-button"
+                onClick={() => {
+                  handleLogin();
+                  resetFields();
+                }}
+              >
+                Login
+              </button>
+            )}
 
-          {/* Login/signup buttons */}
-          <div className="submit-container">
-            <div
-              className={action === 'Login' ? 'submit gray' : 'submit'}
+            <button
+              className="toggle-action-button"
               onClick={() => {
-                setAction('Sign up');
+                setAction(action === 'Login' ? 'Sign up' : 'Login');
                 resetFields();
               }}
             >
-              Signup
-            </div>
-            <div
-              className={action === 'Sign up' ? 'submit gray' : 'submit'}
-              onClick={() => {
-                setAction('Login');
-              }}
-            >
-              Sign in
-            </div>
+              {action === 'Login' ? 'Sign Up' : 'Login'}
+            </button>
           </div>
 
-          {/* Button to show/hide Main component */}
           {showMain && (
             <button className="toggle-main-button" onClick={handleToggleMain}>
               Hide Main
@@ -189,7 +177,7 @@ const LoginSignup = () => {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

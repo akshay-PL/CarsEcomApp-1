@@ -1744,3 +1744,74 @@
 
 
 
+
+
+/**
+ * @swagger
+ * /uploadImage:
+ *   get:
+ *     summary: Retrieve all images
+ *     description: Retrieve a list of all uploaded images from the database.
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         schema:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               ID:
+ *                 type: integer
+ *               ImageData:
+ *                 type: string
+ *               Description:
+ *                 type: string
+ *       500:
+ *         description: Internal Server Error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             error:
+ *               type: string
+ */
+
+
+
+
+
+/**
+ * @swagger
+ * /uploadImage:
+ *   post:
+ *     summary: Uploads an image to the database
+ *     consumes:
+ *       - multipart/form-data
+ *     parameters:
+ *       - name: imageData
+ *         in: formData
+ *         description: The image file to be uploaded (JPEG, PNG, etc.)
+ *         required: true
+ *         type: file
+ *       - name: description
+ *         in: formData
+ *         description: Description of the image
+ *         required: true
+ *         type: string
+ *     responses:
+ *       '200':
+ *         description: Image uploaded successfully
+ *         schema:
+ *           type: string
+ *       '500':
+ *         description: Error uploading image
+ *         schema:
+ *           type: string
+ */
+
+
+
+
+
+

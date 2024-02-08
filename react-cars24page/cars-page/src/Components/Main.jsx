@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Main.css';
 
-import car1 from './Assets/car1.jpg';
+// Importing car images
+import car1 from './Assets/Audi340i.jpg';
 import car2 from './Assets/car2.jpg';
 import car3 from './Assets/car3.png';
 import car4 from './Assets/car4.png';
@@ -12,12 +13,14 @@ import car5 from './Assets/car5.jpg';
 import car6 from './Assets/car6.png';
 
 const Main = () => {
+  // State variables for managing data and navigation
   const [cars, setCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 3; // Number of items per page
   const navigate = useNavigate();
 
+  // Fetching data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,30 +34,36 @@ const Main = () => {
     fetchData();
   }, []);
 
+  // Function to handle click event for viewing car details
   const handleSeeDetails = (carId) => {
     const selected = cars.find((car) => car.id === carId);
     setSelectedCar(selected);
-    navigate(`/details/${carId}`, { state: { image: getCarImage(carId) } });
+    navigate(`/main/details/${carId}`, { state: { image: getCarImage(carId) } });
   };
 
+  // Function to handle click event for buying a car
   const handleBuyClick = (carId) => {
     const selected = cars.find((car) => car.id === carId);
     setSelectedCar(selected);
-    navigate(`/details/${carId}`, { state: { image: getCarImage(carId) } });
+    navigate(`/main/details/${carId}`, { state: { image: getCarImage(carId) } });
   };
 
+  // Function to handle click event for previous page
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
+  // Function to handle click event for next page
   const handleNextPage = () => {
+    const totalPageCount = Math.ceil(cars.length / itemsPerPage);
     if (currentPage < totalPageCount) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+  // Function to get car image based on carId
   const getCarImage = (carId) => {
     switch (carId) {
       case 1:
@@ -74,104 +83,38 @@ const Main = () => {
     }
   };
 
-  const totalPageCount = Math.ceil(cars.length / itemsPerPage);
+  // Calculate start index for slicing cars array based on current page
   const startIndex = (currentPage - 1) * itemsPerPage;
+  // Calculate end index for slicing cars array based on current page
   const endIndex = startIndex + itemsPerPage;
+  // Slice the cars array to display only items for the current page
   const displayedCars = cars.slice(startIndex, endIndex);
 
   return (
-    <div className="container">
-      {selectedCar ? (
-        <div className={`car${selectedCar.id} carDetails`}>
-          <h3>{selectedCar.brand}</h3>
-          <img src={getCarImage(selectedCar.id)} alt="" className={`car${selectedCar.id}-image`} />
-          <div>
-            <p style={{ fontSize: '16px', color: '#3498db', fontWeight: 'bold' }}>Brand: {selectedCar.brand}</p>
-            <p style={{ fontSize: '14px', color: '#2ecc71', fontWeight: 'bold' }}>Type: {selectedCar.type}</p>
-            <p style={{ fontSize: '14px', color: '#2ecc71', fontWeight: 'bold' }}>Model: {selectedCar.model}</p>
-            <p style={{ fontSize: '14px', color: '#2ecc71', fontWeight: 'bold' }}>Price: {selectedCar.price}</p>
-            <button
-              style={{
-                background: '#e74c3c',
-                color: '#fff',
-                fontSize: '16px',
-                padding: '8px 16px',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                transition: 'background 0.3s',
-              }}
-              onClick={() => handleBuyClick(selectedCar.id)}
-            >
-              Buy
-            </button>
-          </div>
-        </div>
-      ) : (
-        displayedCars.map((car) => (
-          <div key={car.id} className={`car${car.id} carDetails`} onClick={() => handleSeeDetails(car.id)}>
+    <div className="product-container">
+      {/* Display cars in a grid layout */}
+      <div className="grid-container">
+        {/* Map through displayed cars and render each car */}
+        {displayedCars.map((car) => (
+          <div key={car.id} className={`grid-item carDetails car${car.id}`} onClick={() => handleSeeDetails(car.id)}>
             <h3>{car.brand}</h3>
             <img src={getCarImage(car.id)} alt="" className={`car${car.id}-image`} />
             <div>
-              <p style={{ fontSize: '16px', color: '#ffffff', fontWeight: 'bold' }}>Brand: {car.brand}</p>
-              <p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Type: {car.type}</p>
-              <p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Model: {car.model}</p>
-              <p style={{ fontSize: '14px', color: '#34495e', fontWeight: 'bold' }}>Price: {car.price}</p>
-              <button
-                style={{
-                  background: '#e74c3c',
-                  color: '#fff',
-                  fontSize: '14px',
-                  padding: '6px 12px',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  transition: 'background 0.3s',
-                }}
-                onClick={() => handleBuyClick(car.id)}
-              >
-                Buy Now
-              </button>
+              <p>Brand: {car.brand}</p>
+              <p>Type: {car.type}</p>
+              <p>Model: {car.model}</p>
+              <p>Price: {car.price}</p>
+              <button onClick={() => handleBuyClick(car.id)}>Buy Now</button>
             </div>
           </div>
-        ))
-      )}
+        ))}
+      </div>
+
       {/* Previous and Next buttons */}
-      <div style={{ gridColumn: 'span 3', textAlign: 'center', marginTop: '20px' }}>
-        <button
-          style={{
-            background: '#3498db',
-            color: '#fff',
-            fontSize: '14px',
-            padding: '6px 12px',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            transition: 'background 0.3s',
-            marginRight: '10px',
-          }}
-          onClick={handlePreviousPage}
-          disabled={currentPage === 1}
-        >
-          &#8592; {/* Unicode arrow character for left arrow */}
-        </button>
-        <span style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 10px' }}>{currentPage}</span>
-        <button
-          style={{
-            background: '#3498db',
-            color: '#fff',
-            fontSize: '14px',
-            padding: '6px 12px',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            transition: 'background 0.3s',
-          }}
-          onClick={handleNextPage}
-          disabled={currentPage === totalPageCount}
-        >
-          &#8594; {/* Unicode arrow character for right arrow */}
-        </button>
+      <div className="pagination">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>&#8592;</button>
+        <span>Page {currentPage}</span>
+        <button onClick={handleNextPage} disabled={currentPage === Math.ceil(cars.length / itemsPerPage)}>&#8594;</button>
       </div>
     </div>
   );

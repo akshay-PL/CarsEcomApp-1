@@ -7,6 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const swaggerJsdoc = require('swagger-jsdoc');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+
+const upload = multer({ dest: 'C:/Akshay pL Custom Folder/PROGRAMS/react-cars24-dummy-project/react-cars24page/cars-page/src/Components/Assets' });
+
+
 //cors error
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
@@ -397,16 +402,17 @@ app.get('/cars/:id', async (req, res) => {
 
 // Create a new car
 app.post('/cars', async (req, res) => {
-  const { brand,type, model, year, price, stock_quantity,description } = req.body;
+  const { brand, type, model, year, price, stock_quantity, description } = req.body;
   try {
-    const result = await sql.query`INSERT INTO Cars (brand,type, model, year, price, stock_quantity, createdBy,description) 
-                                      VALUES (${brand},${type}, ${model}, ${year}, ${price}, ${stock_quantity},${description}, 1)`;
+    const result = await sql.query`INSERT INTO Cars (brand, type, model, year, price, stock_quantity, description, createdBy) 
+                                      VALUES (${brand}, ${type}, ${model}, ${year}, ${price}, ${stock_quantity}, ${description}, 1)`;
     res.status(201).json({ message: 'Car created successfully' });
   } catch (error) {
     console.error('Error creating car:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 // Update a car by ID
 app.put('/cars/:id', async (req, res) => {
@@ -581,6 +587,14 @@ app.delete('/orderitems/:id', async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
 // Signup endpoint
 app.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
@@ -646,6 +660,42 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ error: "Something went wrong during authentication" });
   }
 });
+
+
+
+
+
+
+// GET method to retrieve all images from the database
+app.get('/uploadImage', async (req, res) => {
+  try {
+    await sql.connect(config);
+    const request = new sql.Request();
+    const result = await request.query('SELECT * FROM CarImages');
+    res.status(200).json(result.recordset);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving images.");
+  } finally {
+    sql.close();
+  }
+});
+
+// POST method to upload an image to the database
+app.post('/uploadImage', upload.single('imageData'), async (req, res) => {
+  try {
+    
+    const imagePath = req.file.path; 
+    const description = req.body.description; 
+
+    
+    res.status(200).send("Image uploaded successfully.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error uploading image.");
+  }
+});
+
 
 
 

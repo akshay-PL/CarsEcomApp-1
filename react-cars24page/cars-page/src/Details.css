@@ -21,7 +21,7 @@ html {
     justify-content: center;
     font-family: 'Roboto', sans-serif;
     min-height: 100%;
-    background: linear-gradient(135deg, #3498db, #2ecc71); /* Gradient background, you can adjust colors */
+    background: linear-gradient(135deg, #f0f0f0, #dcdcdc); /* Professional gradient background */
 }
 
 .car-details {
@@ -92,22 +92,33 @@ html {
 }
 
 .back-to-main-button {
-    background-color: transparent; /* Set background color to transparent */
-    color: #fff;
-    padding: 12px 24px;
-    border: 2px solid #fff; /* Add a white border for better visibility */
-    border-radius: 8px;
+    background-color: transparent;
+    color: #0180ff;
+    width: 40px; /* Set the width and height to be equal for a perfect circle */
+    height: 40px; /* Set the width and height to be equal for a perfect circle */
+    border: none; /* Remove border */
+    border-radius: 50%; /* Make it circular */
     cursor: pointer;
-    font-size: 16px;
+    font-size: 20px; /* Increase font size for the arrow */
     text-decoration: none;
     transition: background-color 0.3s ease;
-    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .back-to-main-button:hover {
-    background-color: rgba(195, 57, 57, 0.2); /* Semi-transparent red on hover */
-    /* Adjust the RGB values and opacity as needed */
+    background-color: #d3d3d3; /* Change background color on hover */
 }
+
+.back-to-main-button:hover span {
+    color: #0180ff; /* Change text color of the arrow on hover */
+}
+
+
+
+
+
 
 
 .buy-now-button {
@@ -125,5 +136,19 @@ html {
 }
 
 .buy-now-button:hover {
-    background-color: #c0392b;
+    background-color: #1e90ff;
 }
+
+/* Add hover effect for the image */
+.car-image:hover {
+    transform: scale(1.05); /* Scale up the image slightly on hover */
+    transition: transform 0.3s ease; /* Add smooth transition effect */
+}
+
+/* New class for hover effect on description box */
+.description-hover:hover {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background on hover */
+    /* Adjust the RGB values and opacity as needed */
+}
+
+

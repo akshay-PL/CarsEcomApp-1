@@ -37,7 +37,7 @@ const App = () => {
           }
         />
         <Route
-          path="/details/:id"
+          path="/main/details/:id" // Updated path for Details component
           element={
             <Layout>
               <Details />

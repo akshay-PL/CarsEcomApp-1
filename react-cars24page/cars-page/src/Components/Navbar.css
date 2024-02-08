@@ -16,7 +16,9 @@
 .carlogoimage {
   width: 50px;
   height: 50px;
+  border-radius: 50%; /* This will make it a full circle */
 }
+
 
 .heading {
   font-size: 29px;
@@ -25,7 +27,7 @@
   text-decoration: none;
   position: relative;
   margin-right: -95px; /* Adjust the margin-right as needed */
-  color: #e74c3c;
+  color: #0682e8;
 }
 
 .heading::after {
@@ -56,5 +58,6 @@
 }
 
 .nav-link:hover {
-  color: #e74c3c; /* Change the color on hover if desired */
+  color: #0682e8; /* Change the color on hover if desired */
+  transform: translateY(-2.55px);
 }

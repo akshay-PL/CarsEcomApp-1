@@ -1,6 +1,5 @@
-// Details.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation, Link } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
 import './Details.css';
 
@@ -8,6 +7,7 @@ const Details = () => {
   const { id } = useParams();
   const [details, setDetails] = useState({});
   const location = useLocation();
+  const navigate = useNavigate(); // Get the navigation function
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -26,9 +26,14 @@ const Details = () => {
 
   return (
     <div className="details-container">
-      <Link to="/main" className="back-to-main-button" style={{ position: 'absolute', top: '70px', left: '-5px', margin: '7px' }}>
-        Back to Main
-      </Link>
+      {/* Use a button for navigation */}
+      <button
+        onClick={() => navigate('/main')} // Use navigate function to navigate
+        className="back-to-main-button"
+        style={{ position: 'absolute', top: '70px', left: '-5px', margin: '7px' }}
+      >
+        <span>&#8592;</span>
+      </button>
       {details && (
         <div className="car-details">
           <div className="image-box">
@@ -48,7 +53,6 @@ const Details = () => {
               </div>
             </div>
             <div className="details-actions">
-              
               <button className="buy-now-button">Buy Now</button>
             </div>
           </div>

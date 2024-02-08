@@ -1,42 +1,74 @@
+/* About.css */
+
 .about-container {
-  min-height: 100vh;
-  position: relative;
+  min-height: calc(100vh - 90px); /* Adjusted to maintain space from the top */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   padding: 20px;
-  margin-top: 90px; /* Adjust the margin-top value to position it lower */
+  background-color: #fffafa;
 }
 
 .about-go-back-button {
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  font-size: 16px;
+  background-color: transparent;
+  color: #0180ff;
+  width: 40px; /* Set the width and height to be equal for a perfect circle */
+  height: 40px; /* Set the width and height to be equal for a perfect circle */
+  border: none; /* Remove border */
+  border-radius: 50%; /* Make it circular */
   cursor: pointer;
-  margin-bottom: 10px;
-  border-radius: 5px;
+  font-size: 20px; /* Increase font size for the arrow */
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -1470px; /* Adjusted positioning */
+  margin-top: -15px;
 }
+
+.about-go-back-button:hover {
+  background-color: #d3d3d3; /* Change background color on hover */
+}
+
+.about-go-back-button:hover span {
+  color: #0180ff; /* Change text color of the arrow on hover */
+}
+
 
 .about-info-box {
   border: 1px solid #3498db;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
 }
 
 .about-info-box h1 {
   color: #333;
+  margin-bottom: 20px;
 }
 
-.about-info-box p {
+.about-info-box .about-section {
+  margin-bottom: 30px;
+}
+
+.about-info-box h2 {
+  color: #3498db;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.about-info-box p, .about-info-box ul {
   color: #666;
+  margin-bottom: 10px;
+}
+
+.about-info-box ul {
+  padding-left: 20px;
 }
 
 .about-page-footer {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   padding: 10px;
   background-color: #f0f0f0;
