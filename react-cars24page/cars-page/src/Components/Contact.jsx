@@ -27,7 +27,7 @@ const Contact = () => {
     <div className="contact-container">
       <div className="contact-button-container">
         <button className="contact-go-back-button" onClick={handleGoBack} style={{ position: 'absolute', top: '70px', left: '-5px', margin: '7px' }}>
-          <span>&#8592;</span>
+          <span>&#9664;</span>
         </button>
       </div>
       <div className="contact-info-box">

@@ -57,6 +57,7 @@ const LoginSignup = () => {
         // Display alert on successful signup
         alert('User registered successfully!');
         console.log('Signup Successful:', response.data);
+        alert('Signup successful.');
         
         // You might want to do something after successful signup
       } else {
@@ -67,13 +68,14 @@ const LoginSignup = () => {
     } catch (error) {
       // Display alert if an error occurred during signup
       console.error('Error during signup:', error);
-      alert('Signup failed. Please try again.');
+      alert('Signup failed. Make sure all fields are entered for registering.');
     }
   };
   
 
   const handleForgotPassword = () => {
     console.log('Forgot Password clicked');
+    alert('Currently not functional. Update is coming soon !');
   };
 
   const resetFields = () => {
@@ -102,7 +104,7 @@ const LoginSignup = () => {
                 <img src={user_icon} alt="" />
                 <input
                   type="text"
-                  placeholder="Username"
+                  placeholder="Name"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
@@ -112,7 +114,7 @@ const LoginSignup = () => {
               <img src={email_icon} alt="" />
               <input
                 type="email"
-                placeholder="Email id"
+                placeholder="Email id / Mobile no."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />

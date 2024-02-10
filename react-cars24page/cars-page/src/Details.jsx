@@ -1,3 +1,5 @@
+// Details.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from 'axios';
@@ -24,6 +26,11 @@ const Details = () => {
 
   const carImage = location.state ? location.state.image : '';
 
+  // Function to handle click event for buying a car
+  const handleBuyClick = () => {
+    navigate(`/buynowcheckout/${id}`); // Navigate to BuyNowCheckout.jsx
+  };
+
   return (
     <div className="details-container">
       {/* Use a button for navigation */}
@@ -32,7 +39,7 @@ const Details = () => {
         className="back-to-main-button"
         style={{ position: 'absolute', top: '70px', left: '-5px', margin: '7px' }}
       >
-        <span>&#8592;</span>
+        <span>&#9664;</span>
       </button>
       {details && (
         <div className="car-details">
@@ -53,7 +60,7 @@ const Details = () => {
               </div>
             </div>
             <div className="details-actions">
-              <button className="buy-now-button">Buy Now</button>
+              <button className="buy-now-button" onClick={handleBuyClick}>Buy Now</button>
             </div>
           </div>
         </div>

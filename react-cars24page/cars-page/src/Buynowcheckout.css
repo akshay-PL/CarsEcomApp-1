@@ -1,0 +1,93 @@
+.checkout-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.checkout-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Increase specificity */
+.checkout-form input.input-field[type="text"],
+.checkout-form input.input-field[type="email"] {
+    width: 40%;
+}
+
+
+.checkout-form input[type="text"],
+.checkout-form input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.checkout-button {
+    background-color: #1e90ff;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-button:hover {
+    background-color: #0682e8;
+}
+
+.product-info p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.checkout-form > *:not(h2) {
+    margin-bottom: 30px;
+}
+
+.checkout-heading {
+    font-size: 28px;
+    margin-top: -10px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #0682e8;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.checkout-back-to-main-button {
+    background-color: transparent;
+    color: #75b5f6;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 11px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -40px;
+    margin-left: -16px;
+}
+
+.checkout-back-to-main-button:hover {
+    background-color: #d3d3d3;
+}
+
+.checkout-back-to-main-button:hover span {
+    color: #328fec;
+}

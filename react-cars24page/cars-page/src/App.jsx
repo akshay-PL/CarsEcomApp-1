@@ -1,4 +1,5 @@
 // App.jsx
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Layout from './Layout.jsx';
@@ -7,6 +8,7 @@ import Details from './Details.jsx';
 import Login from './Components/Login.jsx';
 import About from './Components/About.jsx';
 import Contact from './Components/Contact.jsx';
+import Buynowcheckout from './Buynowcheckout.jsx'; // Import CheckoutPage
 
 const App = () => {
   return (
@@ -44,6 +46,7 @@ const App = () => {
             </Layout>
           }
         />
+        <Route path="/buynowcheckout/:id" element={<Layout><Buynowcheckout /></Layout>} /> 
         <Route path="/" element={<Login />} />
       </Routes>
     </Router>

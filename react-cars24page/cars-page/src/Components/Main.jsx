@@ -1,4 +1,3 @@
-// Main.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -13,10 +12,10 @@ import car5 from './Assets/car5.jpg';
 import car6 from './Assets/car6.png';
 
 const Main = () => {
-  // State variables for managing data and navigation
+  // State variables for managing data, navigation, and search
   const [cars, setCars] = useState([]);
-  const [selectedCar, setSelectedCar] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const itemsPerPage = 3; // Number of items per page
   const navigate = useNavigate();
 
@@ -36,16 +35,13 @@ const Main = () => {
 
   // Function to handle click event for viewing car details
   const handleSeeDetails = (carId) => {
-    const selected = cars.find((car) => car.id === carId);
-    setSelectedCar(selected);
     navigate(`/main/details/${carId}`, { state: { image: getCarImage(carId) } });
   };
 
   // Function to handle click event for buying a car
-  const handleBuyClick = (carId) => {
-    const selected = cars.find((car) => car.id === carId);
-    setSelectedCar(selected);
-    navigate(`/main/details/${carId}`, { state: { image: getCarImage(carId) } });
+  const handleBuyClick = (event, carId) => {
+    event.stopPropagation(); // Prevent event propagation to handleSeeDetails
+    navigate(`/buynowcheckout/${carId}`);
   };
 
   // Function to handle click event for previous page
@@ -61,6 +57,12 @@ const Main = () => {
     if (currentPage < totalPageCount) {
       setCurrentPage(currentPage + 1);
     }
+  };
+
+  // Function to handle changes in the search term
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1); // Reset current page when search term changes
   };
 
   // Function to get car image based on carId
@@ -83,15 +85,31 @@ const Main = () => {
     }
   };
 
+  // Filter cars based on search term
+  const filteredCars = cars.filter((car) =>
+    car.brand.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   // Calculate start index for slicing cars array based on current page
   const startIndex = (currentPage - 1) * itemsPerPage;
   // Calculate end index for slicing cars array based on current page
   const endIndex = startIndex + itemsPerPage;
   // Slice the cars array to display only items for the current page
-  const displayedCars = cars.slice(startIndex, endIndex);
+  const displayedCars = filteredCars.slice(startIndex, endIndex);
 
   return (
     <div className="product-container">
+      {/* Search bar */}
+      <div className="search-bar-container">
+      <input
+      type="text"
+      placeholder="Search..."
+      value={searchTerm}
+      onChange={handleSearchChange}
+      />
+      </div>
+
+
       {/* Display cars in a grid layout */}
       <div className="grid-container">
         {/* Map through displayed cars and render each car */}
@@ -104,7 +122,7 @@ const Main = () => {
               <p>Type: {car.type}</p>
               <p>Model: {car.model}</p>
               <p>Price: {car.price}</p>
-              <button onClick={() => handleBuyClick(car.id)}>Buy Now</button>
+              <button onClick={(event) => handleBuyClick(event, car.id)}>Buy Now</button>
             </div>
           </div>
         ))}
@@ -112,9 +130,9 @@ const Main = () => {
 
       {/* Previous and Next buttons */}
       <div className="pagination">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>&#8592;</button>
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>&#9664;</button>
         <span>Page {currentPage}</span>
-        <button onClick={handleNextPage} disabled={currentPage === Math.ceil(cars.length / itemsPerPage)}>&#8594;</button>
+        <button onClick={handleNextPage} disabled={currentPage === Math.ceil(filteredCars.length / itemsPerPage)}>&#9654;</button>
       </div>
     </div>
   );

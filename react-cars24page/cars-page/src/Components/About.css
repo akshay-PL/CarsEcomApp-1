@@ -7,17 +7,18 @@
   align-items: center;
   padding: 20px;
   background-color: #fffafa;
+  border: none !important;
 }
 
 .about-go-back-button {
   background-color: transparent;
-  color: #0180ff;
+  color: #75b5f6;
   width: 40px; /* Set the width and height to be equal for a perfect circle */
   height: 40px; /* Set the width and height to be equal for a perfect circle */
   border: none; /* Remove border */
   border-radius: 50%; /* Make it circular */
   cursor: pointer;
-  font-size: 20px; /* Increase font size for the arrow */
+  font-size: 11px; /* Increase font size for the arrow */
   text-decoration: none;
   transition: background-color 0.3s ease;
   display: inline-flex;
@@ -32,12 +33,12 @@
 }
 
 .about-go-back-button:hover span {
-  color: #0180ff; /* Change text color of the arrow on hover */
+  color: #328fec; /* Change text color of the arrow on hover */
 }
 
 
 .about-info-box {
-  border: 1px solid #3498db;
+  border: 0.1px solid rgba(68, 161, 223, 0.5); 
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -45,7 +46,7 @@
 }
 
 .about-info-box h1 {
-  color: #333;
+  color: #0682e8;
   margin-bottom: 20px;
 }
 

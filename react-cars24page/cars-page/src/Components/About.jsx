@@ -14,7 +14,7 @@ const About = () => {
   return (
     <div className="about-container">
       <button className="about-go-back-button" onClick={handleGoBack}>
-  <span>&#8592;</span>
+  <span>&#9664;</span>
 </button>
 
       <div className="about-info-box">
