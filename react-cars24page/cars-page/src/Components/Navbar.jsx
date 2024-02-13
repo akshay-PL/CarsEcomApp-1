@@ -13,9 +13,13 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    navigate('/');
+    // Clear the token from local storage
+    localStorage.removeItem('token');
+  
+    // Optionally, you can redirect the user to the login page or any other page after logout
+    navigate('/'); // Redirect to the login page
   };
-
+  
   return (
     <div className="navbar">
       <div className="logo">

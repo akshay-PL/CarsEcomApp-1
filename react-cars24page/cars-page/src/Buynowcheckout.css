@@ -44,6 +44,12 @@
     background-color: #0682e8;
 }
 
+.product-info strong {
+    font-weight: bold;
+    text-align: left;
+}
+
+
 .product-info p {
     margin: 10px 0;
     font-size: 16px;

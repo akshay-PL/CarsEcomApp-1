@@ -1592,8 +1592,7 @@
  */
 
 
-
-  /**
+/**
  * @swagger
  * /signup:
  *   post:
@@ -1666,9 +1665,6 @@
  *               error: "Something went wrong"
  */
 
-
-
-
 /**
  * @swagger
  * /login:
@@ -1703,7 +1699,7 @@
  *                   description: The authenticated user's details (excluding password).
  *                 auth:
  *                   type: string
- *                   description: JWT token for authentication.
+ *                   description: JWT token for authentication. Include this token in the Authorization header for subsequent requests.
  *       400:
  *         description: Bad request
  *         content:
@@ -1741,6 +1737,7 @@
  *             example:
  *               error: "Something went wrong during authentication"
  */
+
 
 
 

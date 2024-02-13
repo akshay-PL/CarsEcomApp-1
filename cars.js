@@ -16,8 +16,8 @@ const ordersRouter = require('./crud/ordersRouter.js');
 const orderItemsRouter = require('./crud/orderItemsRouter.js');
 
 
-//const multer = require('multer');
-//const upload = multer({ dest: 'C:/Akshay pL Custom Folder/PROGRAMS/react-cars24-dummy-project/react-cars24page/cars-page/src/Components/Assets' });
+const multer = require('multer');
+const upload = multer({ dest: 'C:/Users/PL AKSHAY/Desktop/images' });
 //AWC BUCKET
 //CLOUDINARY
 
@@ -25,7 +25,7 @@ const orderItemsRouter = require('./crud/orderItemsRouter.js');
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Add 'Authorization' header here
   next();
 });
 
@@ -98,6 +98,7 @@ app.use('/orderitems', orderItemsRouter);
 
 
 
+
 // Signup endpoint
 app.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
@@ -126,6 +127,28 @@ app.post("/signup", async (req, res) => {
     res.status(500).json({ error: "Something went wrong during signup process" });
   }
 });
+
+
+
+// Middleware function to verify JWT token
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
+  if (!token) {
+    return res.status(401).json({ error: "Token not provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, jwtKey);
+    // Attach user information to request object for use in protected routes if needed
+    req.user = decoded.user;
+    next();
+  } catch (error) {
+    res.status(401).json({ error: "Invalid token" });
+  }
+};
+
+
+
 
 // Define your JWT secret key
 const jwtKey = "9h0uY9R#wQDZBn3X$nq5rZ7c6yA!E2G*W";
@@ -164,8 +187,13 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// Protected route example
+app.get("/protected", verifyToken, (req, res) => {
+  // If the token is valid, the user object will be attached to the request object
+  const user = req.user;
+  res.json({ message: "Access granted", user });
+});
 
-/*
 
 
 
@@ -189,9 +217,11 @@ app.get('/uploadImage', async (req, res) => {
 app.post('/uploadImage', upload.single('imageData'), async (req, res) => {
   try {
     
-    const imagePath = req.file.path; 
+    const filename = req.file.filename; // Accessing the filename instead of path
     const description = req.body.description; 
 
+    // You can use `filename` to construct the path if needed
+    const imagePath = 'C:/Users/PL AKSHAY/Desktop/images/' + filename;
     
     res.status(200).send("Image uploaded successfully.");
   } catch (error) {
@@ -199,7 +229,7 @@ app.post('/uploadImage', upload.single('imageData'), async (req, res) => {
     res.status(500).send("Error uploading image.");
   }
 });
-*/
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

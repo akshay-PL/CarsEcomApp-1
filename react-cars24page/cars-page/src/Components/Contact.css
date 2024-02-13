@@ -102,3 +102,58 @@ body {
   margin-top: 0;
   padding-left: 20px;
 }
+
+
+
+
+/* Existing code... */
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 40px; /* Decrease padding for smaller screens */
+  }
+
+  .contact-go-back-button {
+    top: 10px; /* Adjust vertical positioning */
+    left: 10px; /* Adjust horizontal positioning */
+    width: 30px; /* Decrease button size for smaller screens */
+    height: 30px; /* Decrease button size for smaller screens */
+    font-size: 10px; /* Decrease font size for the arrow */
+  }
+
+  .contact-info-box {
+    width: 90%; /* Adjust width for smaller screens */
+    padding: 20px; /* Adjust padding for smaller screens */
+    margin-top: -200px; /* Adjusted margin-top for smaller screens */
+  }
+
+  .contact-grid-container {
+    margin-top: -10px; /* Adjust margin-top for smaller screens */
+  }
+}
+
+/* Media query for mobile devices */
+@media (max-width: 480px) {
+  .contact-container {
+    padding: 20px; /* Decrease padding for smaller screens */
+  }
+
+  .contact-go-back-button {
+    top: 5px; /* Further adjust vertical positioning */
+    left: 5px; /* Further adjust horizontal positioning */
+    width: 25px; /* Decrease button size for smaller screens */
+    height: 25px; /* Decrease button size for smaller screens */
+    font-size: 8px; /* Further decrease font size for the arrow */
+  }
+
+  .contact-info-box {
+    width: 95%; /* Adjust width for smaller screens */
+    padding: 10px; /* Adjust padding for smaller screens */
+    margin-top: -150px; /* Further adjusted margin-top for smaller screens */
+  }
+
+  .contact-grid-container {
+    margin-top: 0; /* Remove margin-top for smaller screens */
+  }
+}

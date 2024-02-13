@@ -35,20 +35,58 @@
 
 /* Styles for grid items */
 .grid-item {
+  position: relative;
   border: 1px solid #ccc;
   text-align: center;
-  background-color: #f9f9f9; /* Adding background color for better visualization */
+  background-color: #f9f9f9;
   display: flex;
+  align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px; /* Add padding to accommodate button */
-  transition: transform 0.3s ease, background-color 0.3s ease; /* Adding transition for smooth hover effect */
-  border-radius: 8px; /* Adding rounded edges */
+  padding: 10px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  border-radius: 8px;
+  width: 350px; /* Set fixed width for each grid item */
+  height: 500px; /* Set fixed height for each grid item */
+  line-height: 1.2;
+  cursor: pointer;
 }
+
+.grid-item p {
+  text-align: left;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.grid-item p span.key {
+  color: #333;
+  font-weight: bold;
+  margin-right: 10px;
+  width: 80px; /* Fixed width for key */
+  display: inline-block; /* Ensures consistent width */
+}
+
+.grid-item p span.value {
+  color: #1e1a1a;
+  font-weight: normal;
+  margin-top: 8px; /* Adjust margin top for more space */
+  margin-bottom: 8px; /* Adjust margin bottom for more space */
+  display: inline-block; /* Ensures proper alignment */
+  width: calc(100% - 80px); /* Adjusts width to fill remaining space */
+}
+
+.grid-item div > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
 
 .grid-item img {
   max-width: 100%;
-  height: auto;
+  max-height: 100%; /* Ensure image does not exceed grid item dimensions */
 }
 
 /* Styles for Buy Now button */
@@ -61,6 +99,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s;
+  margin-top: auto; /* Push the button to the bottom of the grid item */
 }
 
 .grid-item button:hover {
@@ -102,4 +141,33 @@
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+/* Main.css */
+
+/* Additional Styles for responsiveness */
+
+/* For smaller screens, decrease the width of the product container */
+@media only screen and (max-width: 768px) {
+  .product-container {
+    width: 90%;
+  }
+}
+
+/* For smaller screens, adjust grid layout */
+@media only screen and (max-width: 824px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    margin-top: 20px; /* Adjusted margin-top for smaller screens */
+    grid-gap: 15px; /* Increase grid gap for more spacing between grid items */
+  }
+
+  .grid-item {
+    width: calc(50% - 15px); /* Adjusted width to ensure two items fit within the screen width with the increased gap */
+    max-width: none; /* Remove max-width to allow items to shrink */
+    height: auto; /* Let the height be determined by content */
+  }
+
+  .grid-item img {
+    max-height: 150px; /* Adjust maximum image height */
+  }
 }

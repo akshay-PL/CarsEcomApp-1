@@ -65,7 +65,8 @@
   display: flex;
   align-items: center;
   margin: auto;
-  width: 480px;
+  width: 100%; /* Adjusted width for responsiveness */
+  max-width: 480px; /* Added max-width for responsiveness */
   height: 60px;
   background: #ecf0f1; /* Light background color for input fields */
   border-radius: 6px;
@@ -110,7 +111,8 @@
 
 .submit-button,
 .toggle-action-button {
-  width: 220px;
+  width: 100%; /* Adjusted width for responsiveness */
+  max-width: 220px; /* Added max-width for responsiveness */
   height: 50px;
   border: none;
   border-radius: 5px;
@@ -149,4 +151,44 @@
 
 .toggle-main-button:hover {
   background-color: #2980b9;
+}
+
+/* Media Queries for Responsiveness */
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 90%;
+  }
+
+  .input {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .submit-button,
+  .toggle-action-button {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    width: 95%;
+  }
+
+  .text {
+    font-size: 36px;
+  }
+
+  .input input {
+    font-size: 16px;
+  }
+
+  .submit-button,
+  .toggle-action-button {
+    max-width: 100%;
+    width: 100%;
+    font-size: 16px;
+  }
 }

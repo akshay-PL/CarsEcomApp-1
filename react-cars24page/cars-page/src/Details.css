@@ -152,3 +152,53 @@ html {
 }
 
 
+
+
+/* Existing code... */
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+    .car-details {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-box {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .car-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .details-info-box {
+        max-width: 100%;
+    }
+}
+
+/* Media query for mobile devices */
+@media (max-width: 480px) {
+    .details-container {
+        padding: 20px;
+    }
+
+    .details-info h3 {
+        font-size: 24px;
+    }
+
+    .car-info {
+        grid-template-columns: 1fr;
+    }
+
+    .back-to-main-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .buy-now-button {
+        padding: 15px 30px;
+        font-size: 16px;
+    }
+}
