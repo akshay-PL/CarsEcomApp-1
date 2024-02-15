@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Buynowcheckout.css";
+import withAuth from "./Components/PrivateRoute";
 
 function CheckoutPage() {
   const { id } = useParams();
@@ -18,6 +19,13 @@ function CheckoutPage() {
     expmonth: "",
     expyear: "",
     cvv: "",
+    billingAddress: {
+      fullname: "",
+      email: "",
+      address: "",
+      city: "",
+      zipcode: "",
+    },
   });
 
   useEffect(() => {
@@ -35,10 +43,20 @@ function CheckoutPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    if (name.startsWith("billing")) {
+      setFormData((prevState) => ({
+        ...prevState,
+        billingAddress: {
+          ...prevState.billingAddress,
+          [name.substring(8)]: value,
+        },
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -132,6 +150,65 @@ function CheckoutPage() {
           <br />
         </div>
 
+        <div className="billing-info">
+          <h2>Billing Information</h2>
+          <input
+            type="text"
+            name="billingFullname"
+            value={formData.billingAddress.fullname}
+            onChange={handleChange}
+            placeholder="Full Name"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <input
+            type="email"
+            name="billingEmail"
+            value={formData.billingAddress.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <input
+            type="text"
+            name="billingAddress"
+            value={formData.billingAddress.address}
+            onChange={handleChange}
+            placeholder="Address"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <input
+            type="text"
+            name="billingCity"
+            value={formData.billingAddress.city}
+            onChange={handleChange}
+            placeholder="City"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <input
+            type="text"
+            name="billingZipcode"
+            value={formData.billingAddress.zipcode}
+            onChange={handleChange}
+            placeholder="Zip Code"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+        </div>
+
         <div className="payment-info">
           <h2>Payment Information</h2>
           <input
@@ -199,4 +276,4 @@ function CheckoutPage() {
   );
 }
 
-export default CheckoutPage;
+export default withAuth(CheckoutPage);

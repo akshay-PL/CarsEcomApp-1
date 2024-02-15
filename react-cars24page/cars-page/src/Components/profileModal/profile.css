@@ -1,0 +1,32 @@
+.modal-container{
+    position: fixed;
+    min-height: 100vh;
+    min-width: 100vw;
+    top: 0;
+    left: 0;
+
+    z-index: 998;
+}
+
+.profile-modal-bg{
+    background-color: #000000;
+    opacity: 40%;
+    z-index: 999;
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+}
+
+.profile-modal{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 400px;
+    height: 300px;
+    padding: 16px;
+    background-color: white;
+    z-index: 1000;
+    border-radius: 10px;
+    box-shadow: 5px 5px 30px 5px #000000;
+}

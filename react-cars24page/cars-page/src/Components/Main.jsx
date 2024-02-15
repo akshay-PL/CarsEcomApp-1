@@ -11,12 +11,12 @@ import car4 from "./Assets/car4.png";
 import car5 from "./Assets/car5.jpg";
 import car6 from "./Assets/car6.png";
 import car7 from "./Assets/mdzire.jpg";
+import withAuth from "./PrivateRoute";
 
-const Main = () => {
+const Main = ({ test }) => {
   // State variables for managing data and navigation
   const [cars, setCars] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3; // Number of items per page
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const navigate = useNavigate();
 
   // Fetching data from API
@@ -46,19 +46,9 @@ const Main = () => {
     navigate(`/buynowcheckout/${carId}`);
   };
 
-  // Function to handle click event for previous page
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  // Function to handle click event for next page
-  const handleNextPage = () => {
-    const totalPageCount = Math.ceil(cars.length / itemsPerPage);
-    if (currentPage < totalPageCount) {
-      setCurrentPage(currentPage + 1);
-    }
+  // Function to handle search term change
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   // Function to get car image based on carId
@@ -83,19 +73,26 @@ const Main = () => {
     }
   };
 
-  // Calculate start index for slicing cars array based on current page
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  // Calculate end index for slicing cars array based on current page
-  const endIndex = startIndex + itemsPerPage;
-  // Slice the cars array to display only items for the current page
-  const displayedCars = cars.slice(startIndex, endIndex);
+  // Filter cars based on search term
+  const filteredCars = cars.filter((car) =>
+    car.brand.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="product-container">
+      <div className="search">
+        {/* Basic search bar input */}
+        <input
+          type="text"
+          placeholder={"Seach here.."}
+          value={searchTerm}
+          onChange={handleSearchChange} // Add onChange event handler
+        />
+      </div>
       {/* Display cars in a grid layout */}
       <div className="grid-container">
-        {/* Map through displayed cars and render each car */}
-        {displayedCars.map((car) => (
+        {/* Map through filtered cars and render each car */}
+        {filteredCars.map((car) => (
           <div
             key={car.id}
             className={`grid-item carDetails car${car.id}`}
@@ -135,22 +132,8 @@ const Main = () => {
           </div>
         ))}
       </div>
-
-      {/* Previous and Next buttons */}
-      <div className="pagination">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-          &#9664;
-        </button>
-        <span>Page {currentPage}</span>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === Math.ceil(cars.length / itemsPerPage)}
-        >
-          &#9654;
-        </button>
-      </div>
     </div>
   );
 };
 
-export default Main;
+export default withAuth(Main);

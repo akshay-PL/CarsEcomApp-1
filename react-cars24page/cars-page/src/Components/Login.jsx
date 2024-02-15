@@ -30,19 +30,18 @@ const LoginSignup = () => {
         email,
         password,
       });
-
       console.log("Login response:", response);
 
       if (response.status === 200) {
         console.log("Login successful");
-        // Store the JWT token in local storage
         localStorage.setItem("token", response.data.auth);
+        let user = {
+          userName: response.data.user.username,
+          email: response.data.user.email,
+        };
+        localStorage.setItem("user", JSON.stringify(user));
 
-        // Get the URL from which the user was redirected to the login page
-        const redirectTo = localStorage.getItem("redirectTo") || "/main";
-
-        // Redirect the user to the previous page or the default page
-        navigate(redirectTo);
+        navigate("/main");
       } else {
         setErrorMessage("Invalid email or password");
       }

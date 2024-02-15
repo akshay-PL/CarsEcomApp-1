@@ -197,6 +197,147 @@ app.get("/protected", verifyToken, (req, res) => {
 
 
 
+
+
+
+// Route for getting all shipping addresses
+app.get('/shippingaddresses', async (req, res) => {
+  try {
+    const result = await sql.query`SELECT * FROM Shipping_address`;
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error fetching shipping address:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+// Route for getting a shipping address by ID
+
+
+app.get('/shippingaddress/:id', async (req, res) => {
+  const addressId = req.params.id;
+  try {
+    const result = await sql.query`
+      SELECT *
+      FROM Shipping_address 
+      WHERE id = ${addressId}`;
+    if (result.recordset.length > 0) {
+      res.json(result.recordset[0]);
+    } else {
+      res.status(404).json({ error: 'Shipping address not found' });
+    }
+  } catch (error) {
+    console.error('Error fetching Shipping Address by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+// Route for creating a new shipping address
+app.post('/shipping_address', async (req, res) => {
+  const { fullName, email, address, city, zipCode, createdBy } = req.body;
+  try {
+    const result = await sql.query`
+      INSERT INTO Shipping_address (fullName, email, address, city, zipCode, createdBy) 
+      VALUES (${fullName}, ${email}, ${address}, ${city}, ${zipCode}, ${createdBy})`;
+
+    const newAddressId = result.recordset[0].newAddressId;
+    res.status(201).json({ message: 'Shipping address created successfully', id: newAddressId });
+  } catch (error) {
+    console.error('Error creating shipping address:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+// Route for getting all billing addresses
+app.get('/billing-addresses', (req, res) => {
+  const sql = 'SELECT * FROM Billing_address';
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
+
+
+
+// Route for getting a billing address by ID
+app.get('/billing-address/:id', (req, res) => {
+  const addressId = req.params.id;
+  const sql = 'SELECT * FROM Billing_address WHERE id = ?';
+  db.query(sql, [addressId], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else if (result.length === 0) {
+      res.status(404).json({ message: 'Billing address not found' });
+    } else {
+      res.json(result[0]);
+    }
+  });
+});
+
+
+
+// Route for creating a new billing address
+app.post('/billing-address', (req, res) => {
+  const { fullName, email, address, city, zipCode } = req.body;
+  const sql = 'INSERT INTO Billing_address (fullName, email, address, city, zipCode) VALUES (?, ?, ?, ?, ?)';
+  db.query(sql, [fullName, email, address, city, zipCode], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(201).json({ message: 'Billing address created successfully', id: result.insertId });
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // GET method to retrieve all images from the database
 app.get('/uploadImage', async (req, res) => {
   try {

@@ -1740,6 +1740,170 @@
 
 
 
+/**
+ * @swagger
+ * /shippingaddresses:
+ *   get:
+ *     summary: Retrieves all shipping addresses
+ *     responses:
+ *       '200':
+ *         description: A list of shipping addresses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   fullName:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                     format: email
+ *                   address:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   zipCode:
+ *                     type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   createdBy:
+ *                     type: integer
+ *       '500':
+ *         description: Error retrieving shipping addresses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+
+
+
+
+/**
+ * @swagger
+ * /shippingaddress/{id}:
+ *   get:
+ *     summary: Retrieves a shipping address by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the shipping address to retrieve
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '200':
+ *         description: A shipping address
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 fullName:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                   format: email
+ *                 address:
+ *                   type: string
+ *                 city:
+ *                   type: string
+ *                 zipCode:
+ *                   type: string
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 createdBy:
+ *                   type: integer
+ *       '404':
+ *         description: Shipping address not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       '500':
+ *         description: Error retrieving shipping address
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+
+
+
+
+
+
+/**
+ * @swagger
+ * /shipping-address:
+ *   post:
+ *     summary: Creates a new shipping address
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               fullName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               address:
+ *                 type: string
+ *               city:
+ *                 type: string
+ *               zipCode:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: Shipping address created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 id:
+ *                   type: integer
+ *       '500':
+ *         description: Error creating shipping address
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+
+
+
+
+
+
 
 
 
@@ -1806,9 +1970,6 @@
  *         schema:
  *           type: string
  */
-
-
-
 
 
 

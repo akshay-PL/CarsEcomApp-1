@@ -8,43 +8,31 @@
   background-color: #333;
   color: white;
   position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.logo {
-  margin-right: 10px;
+.logo-container {
+  display: flex;
+  align-items: center;
 }
 
 .carlogoimage {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%; /* This will make it a full circle */
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
 }
-
 
 .heading {
-  font-size: 29px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 400; /* Normal font weight */
   font-style: italic;
   text-decoration: none;
-  position: relative;
-  margin-right: -95px; /* Adjust the margin-right as needed */
-  color: #0682e8;
-}
-
-.heading::after {
-  content: '';
-  display: block;
-  height: 3px;
-  width: 100%; /* Set the initial width to 100% */
-  background-color: #fff;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  transition: width 0.3s ease;
-}
-
-.heading:hover::after {
-  width: 0; /* Change the width on hover to create the disappearing effect */
+  color: #fff; /* White color */
+  margin-left: 10px; /* Adjusted for better spacing */
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
 }
 
 .nav-links {
@@ -54,11 +42,69 @@
 
 .nav-link {
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px; /* Reduced font size for better proportion */
   transition: color 0.3s ease;
+  color: #fff; /* White color */
 }
 
 .nav-link:hover {
-  color: #0682e8; /* Change the color on hover if desired */
-  transform: translateY(-2.55px);
+  color: #0682e8; /* Hover color */
+  transform: translateY(-2px);
 }
+
+.user-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Dropdown styles */
+/* Navbar.css */
+
+.dropdown-container {
+  position: absolute;
+  top: calc(100% + 8px); /* Position below the logout link */
+  right: 0;
+  background-color: #333; /* White background */
+  border: 1px solid #e0e0e0; /* Lighter border color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for dropdown */
+  z-index: 999; /* Ensure dropdown stays on top of other content */
+  padding: 8px 0; /* Add padding to create space around the content */
+  min-width: 160px; /* Set minimum width */
+}
+
+.dropdown-option {
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px; /* Increased font size */
+  color: #fffdfd; /* Dark text color */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.dropdown-option:hover {
+  background-color: #000000; /* Light background color on hover */
+  opacity: 0.9; /* Slightly reduce opacity on hover */
+}
+
+.loader{
+  display: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border-left: 3px solid white;
+  border-right: 3px solid white;
+  border-top: 3px solid white;
+  border-bottom: 3px solid transparent;
+  background-color: transparent;
+  animation: spin infinite ease 1s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+

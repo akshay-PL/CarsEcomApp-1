@@ -1,12 +1,13 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Contact.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./Contact.css";
+import withAuth from "./PrivateRoute";
 
 const Contact = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/main');
+    navigate("/main");
   };
 
   // Random general answers for FAQs
@@ -26,7 +27,16 @@ const Contact = () => {
   return (
     <div className="contact-container">
       <div className="contact-button-container">
-        <button className="contact-go-back-button" onClick={handleGoBack} style={{ position: 'absolute', top: '70px', left: '-5px', margin: '7px' }}>
+        <button
+          className="contact-go-back-button"
+          onClick={handleGoBack}
+          style={{
+            position: "absolute",
+            top: "70px",
+            left: "-5px",
+            margin: "7px",
+          }}
+        >
           <span>&#9664;</span>
         </button>
       </div>
@@ -49,8 +59,12 @@ const Contact = () => {
             <ul>
               <li>How can I track my order? - {generateRandomAnswer()}</li>
               <li>What is your return policy? - {generateRandomAnswer()}</li>
-              <li>Do you offer international shipping? - {generateRandomAnswer()}</li>
-              <li>How do I contact customer support? - {generateRandomAnswer()}</li>
+              <li>
+                Do you offer international shipping? - {generateRandomAnswer()}
+              </li>
+              <li>
+                How do I contact customer support? - {generateRandomAnswer()}
+              </li>
             </ul>
           </div>
         </div>
@@ -60,4 +74,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default withAuth(Contact);
