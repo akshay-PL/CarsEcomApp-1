@@ -1667,6 +1667,81 @@
 
 /**
  * @swagger
+ * /signup/:username:
+ *   put:
+ *     tags:
+ *       - Authentication
+ *     summary: Update User Information
+ *     description: Update user information including username, email, or password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The username of the user.
+ *               email:
+ *                 type: string
+ *                 description: The email of the user.
+ *               password:
+ *                 type: string
+ *                 description: The password of the user.
+ *     responses:
+ *       200:
+ *         description: User information updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: User information updated successfully.
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Username, Email, or password missing.
+ *             example:
+ *               error: "Username or Email or password missing"
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: User not found.
+ *             example:
+ *               error: "User not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Something went wrong during update process.
+ *             example:
+ *               error: "Something went wrong"
+ */
+
+
+
+/**
+ * @swagger
  * /login:
  *   post:
  *     tags:
@@ -1739,10 +1814,9 @@
  */
 
 
-
 /**
  * @swagger
- * /shippingaddresses:
+ * /shippingaddress:
  *   get:
  *     summary: Retrieves all shipping addresses
  *     responses:
@@ -1773,6 +1847,8 @@
  *                     format: date-time
  *                   createdBy:
  *                     type: integer
+ *                   is_shipping_add_same:
+ *                     type: boolean
  *       '500':
  *         description: Error retrieving shipping addresses
  *         content:
@@ -1783,7 +1859,6 @@
  *                 error:
  *                   type: string
  */
-
 
 
 
@@ -1826,6 +1901,8 @@
  *                   format: date-time
  *                 createdBy:
  *                   type: integer
+ *                 is_shipping_add_same:
+ *                   type: boolean
  *       '404':
  *         description: Shipping address not found
  *         content:
@@ -1849,12 +1926,9 @@
 
 
 
-
-
-
 /**
  * @swagger
- * /shipping-address:
+ * /shippingaddress:
  *   post:
  *     summary: Creates a new shipping address
  *     requestBody:
@@ -1875,6 +1949,8 @@
  *                 type: string
  *               zipCode:
  *                 type: string
+ *               is_shipping_add_same:
+ *                 type: boolean
  *     responses:
  *       '201':
  *         description: Shipping address created successfully
@@ -1902,74 +1978,257 @@
 
 
 
-
-
-
-
-
 /**
  * @swagger
- * /uploadImage:
+ * /billing-addresses:
  *   get:
- *     summary: Retrieve all images
- *     description: Retrieve a list of all uploaded images from the database.
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Successful response
- *         schema:
- *           type: array
- *           items:
- *             type: object
- *             properties:
- *               ID:
- *                 type: integer
- *               ImageData:
- *                 type: string
- *               Description:
- *                 type: string
- *       500:
- *         description: Internal Server Error
- *         schema:
- *           type: object
- *           properties:
- *             error:
- *               type: string
- */
-
-
-
-
-
-/**
- * @swagger
- * /uploadImage:
- *   post:
- *     summary: Uploads an image to the database
- *     consumes:
- *       - multipart/form-data
- *     parameters:
- *       - name: imageData
- *         in: formData
- *         description: The image file to be uploaded (JPEG, PNG, etc.)
- *         required: true
- *         type: file
- *       - name: description
- *         in: formData
- *         description: Description of the image
- *         required: true
- *         type: string
+ *     summary: Retrieves all billing addresses
  *     responses:
  *       '200':
- *         description: Image uploaded successfully
- *         schema:
- *           type: string
+ *         description: A list of billing addresses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   fullName:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                     format: email
+ *                   address:
+ *                     type: string
+ *                   city:
+ *                     type: string
+ *                   zipCode:
+ *                     type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
  *       '500':
- *         description: Error uploading image
- *         schema:
- *           type: string
+ *         description: Error retrieving billing addresses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
 
 
 
+
+
+/**
+ * @swagger
+ * paths:
+ *   /billing-address/{id}:
+ *     get:
+ *       summary: Get a billing address by ID
+ *       parameters:
+ *         - in: path
+ *           name: id
+ *           required: true
+ *           description: ID of the billing address to retrieve
+ *           schema:
+ *             type: integer
+ *             format: int64
+ *       responses:
+ *         '200':
+ *           description: OK. Returns the billing address.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/BillingAddress'
+ *         '404':
+ *           description: Not Found. If the billing address with the specified ID does not exist.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   error:
+ *                     type: string
+ *                     example: Billing address not found
+ *         '500':
+ *           description: Internal Server Error. If there was an issue on the server side.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   error:
+ *                     type: string
+ *                     example: Internal Server Error
+ */
+
+
+
+
+/**
+ * @swagger
+ * paths:
+ *   /billing-address:
+ *     post:
+ *       summary: Create a new billing address
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 fullName:
+ *                   type: string
+ *                   description: Full name of the customer associated with the billing address.
+ *                 email:
+ *                   type: string
+ *                   format: email
+ *                   description: Email address of the customer associated with the billing address.
+ *                 address:
+ *                   type: string
+ *                   description: Street address of the billing address.
+ *                 city:
+ *                   type: string
+ *                   description: City of the billing address.
+ *                 zipCode:
+ *                   type: string
+ *                   description: Zip code of the billing address.
+ *       responses:
+ *         '201':
+ *           description: Created. Indicates the billing address was successfully created.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: Billing address created successfully
+ *         '500':
+ *           description: Internal Server Error. If there was an issue on the server side.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   error:
+ *                     type: string
+ *                     example: Internal Server Error
+ */
+
+
+/**
+ * @swagger
+ * /ordersummary:
+ *   get:
+ *     summary: Get all orders
+ *     description: Endpoint to fetch all orders
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   user_username:
+ *                     type: string
+ *                   user_email:
+ *                     type: string
+ *                   product_brand:
+ *                     type: string
+ *                   product_type:
+ *                     type: string
+ *                   product_model:
+ *                     type: string
+ *                   product_price:
+ *                     type: string
+ *                   ship_fullName:
+ *                     type: string
+ *                   ship_email:
+ *                     type: string
+ *                   ship_address:
+ *                     type: string
+ *                   ship_city:
+ *                     type: string
+ *                   ship_zipCode:
+ *                     type: string
+ *                   bill_fullName:
+ *                     type: string
+ *                   bill_email:
+ *                     type: string
+ *                   bill_address:
+ *                     type: string
+ *                   bill_city:
+ *                     type: string
+ *                   bill_zipCode:
+ *                     type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *       500:
+ *         description: Internal Server Error
+ */
+
+
+/**
+ * @swagger
+ * /orders:
+ *   post:
+ *     summary: Create a new order
+ *     description: Endpoint to create a new order
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_username:
+ *                 type: string
+ *               user_email:
+ *                 type: string
+ *               product_brand:
+ *                 type: string
+ *               product_type:
+ *                 type: string
+ *               product_model:
+ *                 type: string
+ *               product_price:
+ *                 type: string
+ *               ship_fullName:
+ *                 type: string
+ *               ship_email:
+ *                 type: string
+ *               ship_address:
+ *                 type: string
+ *               ship_city:
+ *                 type: string
+ *               ship_zipCode:
+ *                 type: string
+ *               bill_fullName:
+ *                 type: string
+ *               bill_email:
+ *                 type: string
+ *               bill_address:
+ *                 type: string
+ *               bill_city:
+ *                 type: string
+ *               bill_zipCode:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Order created successfully
+ *       500:
+ *         description: Internal Server Error
+ */

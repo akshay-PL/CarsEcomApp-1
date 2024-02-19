@@ -1,3 +1,5 @@
+// Main.jsx
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -41,9 +43,11 @@ const Main = ({ test }) => {
   };
 
   // Function to handle click event for buying a car
+  // Assuming you have a function for navigating to the Buynowcheckout page
   const handleBuyClick = (event, carId) => {
-    event.stopPropagation(); // Prevent event propagation to handleSeeDetails
-    navigate(`/buynowcheckout/${carId}`);
+    event.stopPropagation();
+    const carImage = getCarImage(carId);
+    navigate(`/buynowcheckout/${carId}`, { state: { image: carImage } });
   };
 
   // Function to handle search term change

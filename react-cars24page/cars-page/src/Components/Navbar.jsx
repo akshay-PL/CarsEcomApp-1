@@ -52,6 +52,10 @@ const Navbar = () => {
     setOpenProfile(!openProfile);
   };
 
+  const navigateToUpdateCredentials = () => {
+    navigate("/update-credentials"); // Assuming this is your route for UpdateCredentials component
+  };
+
   return (
     <div className="navbar">
       <div className="logo-container" onClick={() => navigate("/main")}>
@@ -68,6 +72,12 @@ const Navbar = () => {
         </div>
         <div className="nav-link" onClick={() => handleNavigation("/contact")}>
           Contact
+        </div>
+        <div
+          className="nav-link"
+          onClick={() => handleNavigation("/ordersummary")}
+        >
+          Orders
         </div>
         <div
           className="nav-link logout-link"

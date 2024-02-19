@@ -15,6 +15,7 @@
     min-height: 100%;
     min-width: 100%;
     position: absolute;
+    backdrop-filter: blur(20px);
 }
 
 .profile-modal{
@@ -30,3 +31,4 @@
     border-radius: 10px;
     box-shadow: 5px 5px 30px 5px #000000;
 }
+

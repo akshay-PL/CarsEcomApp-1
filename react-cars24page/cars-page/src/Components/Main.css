@@ -19,6 +19,7 @@
 .product-container {
   width: 80%;
   margin: auto;
+  
 }
 
 /* Grid container for displaying cars */
@@ -44,6 +45,7 @@
   border-radius: 8px;
   line-height: 1.2;
   cursor: pointer;
+  max-width: 375px; /* Set a minimum width for grid items */
 }
 
 .grid-item p {

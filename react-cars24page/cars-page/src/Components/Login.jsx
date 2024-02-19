@@ -34,12 +34,12 @@ const LoginSignup = () => {
 
       if (response.status === 200) {
         console.log("Login successful");
-        localStorage.setItem("token", response.data.auth);
+        sessionStorage.setItem("token", response.data.auth);
         let user = {
           userName: response.data.user.username,
           email: response.data.user.email,
         };
-        localStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("user", JSON.stringify(user));
 
         navigate("/main");
       } else {

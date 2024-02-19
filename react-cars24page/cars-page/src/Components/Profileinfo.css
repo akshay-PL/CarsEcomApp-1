@@ -1,5 +1,43 @@
-.profile-container{
+.profile-container {
     height: 100vh;
     width: 100vh;
+    color: black; 
+  }
 
+  .profile-info{
+    font-style: italic;
+    font-weight: bold;
+  }
+  
+  .checkbox-text{
+    color: blue;
+  }
+
+  .update-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .input-field {
+    margin-top: -10px;
+    width: 100px; 
+    height: 4px; 
+  }
+  
+.update-button {
+  margin-top: -10px; 
+  padding: 8px 16px; 
+  border: none; 
+  border-radius: 40px; 
+  background-color: #007bff; 
+  color: #fff; 
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
 }
+
+.update-button:hover {
+  background-color: #026cdd; 
+}
+
+  

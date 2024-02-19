@@ -1,0 +1,46 @@
+.order-box {
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.orderheading {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.order-section {
+  margin-top: 20px;
+}
+
+.order-section-heading {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.order-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.order-details div {
+  flex: 0 0 50%;
+  padding: 10px;
+}
+
+.order-details p {
+  margin: 5px 0;
+}
+
+.order-details p strong {
+  font-weight: bold;
+}
+
+.order-details p span {
+  color: #888;
+}

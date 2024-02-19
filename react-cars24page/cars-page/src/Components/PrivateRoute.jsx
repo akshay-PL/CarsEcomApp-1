@@ -7,7 +7,7 @@ const withAuth = (WrappedComponent) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-      const isAuthenticated = localStorage.getItem("token");
+      const isAuthenticated = sessionStorage.getItem("token");
       console.log(isAuthenticated);
       if (!isAuthenticated) {
         navigate("/");

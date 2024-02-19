@@ -1,31 +1,77 @@
+/* Checkout Styles */
 .checkout-container {
-    padding: 20px;
     background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.checkout-heading {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.product-information-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-info h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
 }
 
 .checkout-form {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-/* Increase specificity */
-.checkout-form input.input-field[type="text"],
-.checkout-form input.input-field[type="email"] {
-    width: 40%;
+.checkout-form h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
 }
 
-
-.checkout-form input[type="text"],
-.checkout-form input[type="email"] {
-    width: 100%;
+.input-field {
+    width: 35%;
     padding: 12px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box;
     font-size: 16px;
+}
+
+.checkbox-label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.checkbox {
+    margin-right: 5px;
+    vertical-align: middle;
 }
 
 .checkout-button {
@@ -41,34 +87,6 @@
 
 .checkout-button:hover {
     background-color: #0682e8;
-}
-
-.product-info strong {
-    font-weight: bold;
-    text-align: left;
-}
-
-
-.product-info p {
-    margin: 10px 0;
-    font-size: 16px;
-    color: #555;
-}
-
-.checkout-form > *:not(h2) {
-    margin-bottom: 30px;
-}
-
-.checkout-heading {
-    font-size: 28px;
-    margin-top: -10px;
-}
-
-h2 {
-    font-size: 24px;
-    color: #0682e8;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
 }
 
 .checkout-back-to-main-button {

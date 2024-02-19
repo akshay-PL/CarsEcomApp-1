@@ -1,11 +1,5 @@
-// In your App.js file
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Layout from "./Layout.jsx";
 import Main from "./Components/Main.jsx";
 import Details from "./Details.jsx";
@@ -13,7 +7,9 @@ import Login from "./Components/Login.jsx";
 import About from "./Components/About.jsx";
 import Contact from "./Components/Contact.jsx";
 import Buynowcheckout from "./Buynowcheckout.jsx";
+import Ordersummary from "./Components/Ordersummary.jsx";
 import Profileinfo from "./Components/Profileinfo.jsx";
+import UpdateCredentials from "./Components/Updatecredentials.jsx"; // Import UpdateCredentials component
 
 const PrivateRoute = ({ element }) => {
   return element;
@@ -67,10 +63,26 @@ const App = () => {
         <Route
           element={
             <Layout>
+              <PrivateRoute element={<Ordersummary />} />
+            </Layout>
+          }
+          path="/ordersummary"
+        />
+        <Route
+          element={
+            <Layout>
               <PrivateRoute element={<Profileinfo />} />
             </Layout>
           }
           path="/profile"
+        />
+        <Route // New Route for UpdateCredentials component
+          element={
+            <Layout>
+              <PrivateRoute element={<UpdateCredentials />} />
+            </Layout>
+          }
+          path="/update-credentials"
         />
       </Routes>
     </Router>

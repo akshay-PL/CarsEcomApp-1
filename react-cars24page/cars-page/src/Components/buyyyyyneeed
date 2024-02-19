@@ -1,0 +1,313 @@
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Buynowcheckout.css";
+import withAuth from "./Components/PrivateRoute";
+
+function CheckoutPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [carDetails, setCarDetails] = useState(null);
+  const [shippingFormData, setShippingFormData] = useState({
+    fullname: "",
+    email: "",
+    address: "",
+    city: "",
+    zipcode: "",
+  });
+  const [billingFormData, setBillingFormData] = useState({
+    fullname: "",
+    email: "",
+    address: "",
+    city: "",
+    zipcode: "",
+  });
+  const [paymentFormData, setPaymentFormData] = useState({
+    cardname: "",
+    cardnumber: "",
+    expmonth: "",
+    expyear: "",
+    cvv: "",
+  });
+
+  useEffect(() => {
+    const fetchCarDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/cars/${id}`);
+        setCarDetails(response.data);
+      } catch (error) {
+        console.error("Error fetching car details:", error);
+      }
+    };
+
+    fetchCarDetails();
+  }, [id]);
+
+  const handleShippingAddressSubmit = async () => {
+    console.log("hio");
+    try {
+      await axios.post(
+        "http://localhost:3000/shippingaddress",
+        shippingFormData
+      );
+      alert("Shipping address received successfully");
+
+      // Populate billing information fields with shipping information
+      setBillingFormData({
+        fullname: shippingFormData.fullname,
+        email: shippingFormData.email,
+        address: shippingFormData.address,
+        city: shippingFormData.city,
+        zipcode: shippingFormData.zipcode,
+      });
+    } catch (error) {
+      console.error("Error adding shipping address:", error);
+      alert("Failed to add shipping address. Please try again.");
+    }
+  };
+
+  const handleBillingInfoSubmit = async () => {
+    try {
+      await axios.post(
+        "http://localhost:3000/billing-address",
+        billingFormData
+      );
+      alert("Billing address added successfully");
+    } catch (error) {
+      console.error("Error adding billing address:", error);
+      alert("Failed to add billing address. Please try again.");
+    }
+  };
+
+  const handlePaymentInfoSubmit = async () => {
+    try {
+      await axios.post("http://localhost:3000/payment-info", paymentFormData);
+      alert("Payment information added successfully");
+    } catch (error) {
+      console.error("Error adding payment information:", error);
+      alert("Failed to add payment information. Please try again.");
+    }
+  };
+
+  const handleShippingChange = (e) => {
+    const { name, value } = e.target;
+    setShippingFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleBillingChange = (e) => {
+    const { name, value } = e.target;
+    setBillingFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handlePaymentChange = (e) => {
+    const { name, value } = e.target;
+    setPaymentFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleCheckboxChange = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/billing-information"
+      );
+      const { fullname, email, address, city, zipcode } = response.data;
+      setBillingFormData({ fullname, email, address, city, zipcode });
+    } catch (error) {
+      console.error("Error fetching billing information:", error);
+      alert("Failed to fetch billing information. Please try again.");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Order placed successfully");
+  };
+
+  return (
+    <div className="checkout-container">
+      <button
+        onClick={() => navigate("/main")}
+        className="checkout-back-to-main-button"
+      >
+        <span>&#9664;</span>
+      </button>
+      <h1 className="checkout-heading">Checkout</h1>
+      <form onSubmit={handleSubmit} className="checkout-form">
+        {carDetails && (
+          <div className="product-info">
+            <h2>Product Information</h2>
+            <p>
+              <strong>Brand:</strong> {carDetails.brand}
+            </p>
+            <p>
+              <strong>Type:</strong> {carDetails.type}
+            </p>
+            <p>
+              <strong>Model:</strong> {carDetails.model}
+            </p>
+            <p>
+              <strong>Price:</strong> {carDetails.price}
+            </p>
+          </div>
+        )}
+
+        <div className="shipping-info">
+          <h2>Shipping Information</h2>
+          <input
+            type="text"
+            name="fullname"
+            value={shippingFormData.fullname}
+            onChange={handleShippingChange}
+            placeholder="Full Name"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <input
+            type="email"
+            name="email"
+            value={shippingFormData.email}
+            onChange={handleShippingChange}
+            placeholder="Email"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <input
+            type="text"
+            name="address"
+            value={shippingFormData.address}
+            onChange={handleShippingChange}
+            placeholder="Address"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <input
+            type="text"
+            name="city"
+            value={shippingFormData.city}
+            onChange={handleShippingChange}
+            placeholder="City"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <input
+            type="text"
+            name="zipcode"
+            value={shippingFormData.zipcode}
+            onChange={handleShippingChange}
+            placeholder="Zip Code"
+            required
+            className="input-field"
+          />
+          <br />
+          <br />
+          <button
+            onClick={handleShippingAddressSubmit}
+            className="checkout-button"
+          >
+            Confirm Shipping Address
+          </button>
+        </div>
+      </form>
+
+      <div className="billing-info">
+        <h2>Billing Information</h2>
+        <input
+          type="text"
+          name="fullname"
+          value={billingFormData.fullname}
+          onChange={handleBillingChange}
+          placeholder="Full Name"
+          required
+          className="input-field"
+        />
+        <br />
+        <br />
+        <input
+          type="email"
+          name="email"
+          value={billingFormData.email}
+          onChange={handleBillingChange}
+          placeholder="Email"
+          required
+          className="input-field"
+        />
+        <br />
+        <br />
+        <input
+          type="text"
+          name="address"
+          value={billingFormData.address}
+          onChange={handleBillingChange}
+          placeholder="Address"
+          required
+          className="input-field"
+        />
+        <br />
+        <br />
+        <input
+          type="text"
+          name="city"
+          value={billingFormData.city}
+          onChange={handleBillingChange}
+          placeholder="City"
+          required
+          className="input-field"
+        />
+        <br />
+        <br />
+        <input
+          type="text"
+          name="zipcode"
+          value={billingFormData.zipcode}
+          onChange={handleBillingChange}
+          placeholder="Zip Code"
+          required
+          className="input-field"
+        />
+        <br />
+        <br />
+        <button onClick={handleBillingInfoSubmit} className="checkout-button">
+          Confirm Billing Information
+        </button>
+      </div>
+
+      <div>
+        <label htmlFor="populateBilling">
+          Use shipping address for billing
+        </label>
+        <input
+          type="checkbox"
+          id="populateBilling"
+          onChange={handleCheckboxChange}
+        />
+      </div>
+
+      <div className="payment-info">
+        <h2>Payment Information</h2>
+        {/* Payment information fields */}
+      </div>
+
+      <button type="submit" className="checkout-button">
+        Buy
+      </button>
+    </div>
+  );
+}
+
+export default withAuth(CheckoutPage);

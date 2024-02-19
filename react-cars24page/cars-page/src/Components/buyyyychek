@@ -1,0 +1,138 @@
+import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Buynowcheckout.css";
+import withAuth from "./Components/PrivateRoute";
+
+function CheckoutPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [shippingFormData, setShippingFormData] = useState({
+    fullName: "",
+    email: "",
+    address: "",
+    city: "",
+    zipCode: "",
+    is_shipping_add_same: false,
+  });
+
+  const handleShippingAddressSubmit = async () => {
+    try {
+      await axios.post(
+        "http://localhost:3000/shippingaddress",
+        shippingFormData
+      );
+      alert("Shipping address received successfully");
+    } catch (error) {
+      console.error("Error adding shipping address:", error);
+      alert("Failed to add shipping address. Please try again.");
+    }
+  };
+
+  const handleShippingChange = (e) => {
+    const { name, value } = e.target;
+    setShippingFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Order placed successfully");
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setShippingFormData((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
+
+  return (
+    <div className="checkout-container">
+      <button
+        onClick={() => navigate("/main")}
+        className="checkout-back-to-main-button"
+      >
+        <span>&#9664;</span>
+      </button>
+      <h1 className="checkout-heading">Checkout</h1>
+      <form onSubmit={handleSubmit} className="checkout-form">
+        <div className="shipping-info">
+          <h2>Shipping Information</h2>
+          <input
+            type="text"
+            name="fullName"
+            value={shippingFormData.fullName}
+            onChange={handleShippingChange}
+            placeholder="Full Name"
+            required
+            className="input-field"
+          />
+          <br />
+          <input
+            type="email"
+            name="email"
+            value={shippingFormData.email}
+            onChange={handleShippingChange}
+            placeholder="Email"
+            required
+            className="input-field"
+          />
+          <br />
+          <input
+            type="text"
+            name="address"
+            value={shippingFormData.address}
+            onChange={handleShippingChange}
+            placeholder="Address"
+            required
+            className="input-field"
+          />
+          <br />
+          <input
+            type="text"
+            name="city"
+            value={shippingFormData.city}
+            onChange={handleShippingChange}
+            placeholder="City"
+            required
+            className="input-field"
+          />
+          <br />
+          <input
+            type="text"
+            name="zipCode"
+            value={shippingFormData.zipCode}
+            onChange={handleShippingChange}
+            placeholder="Zip Code"
+            required
+            className="input-field"
+          />
+          <br />
+          <button
+            onClick={handleShippingAddressSubmit}
+            className="checkout-button"
+          >
+            Confirm Shipping Address
+          </button>
+        </div>
+      </form>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            name="is_shipping_add_same"
+            onChange={handleCheckboxChange}
+            className="checkbox"
+          />
+          I agree to the terms and conditions
+        </label>
+      </div>
+    </div>
+  );
+}
+
+export default withAuth(CheckoutPage);
