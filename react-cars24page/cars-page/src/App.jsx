@@ -10,6 +10,9 @@ import Buynowcheckout from "./Buynowcheckout.jsx";
 import Ordersummary from "./Components/Ordersummary.jsx";
 import Profileinfo from "./Components/Profileinfo.jsx";
 import UpdateCredentials from "./Components/Updatecredentials.jsx"; // Import UpdateCredentials component
+import Forgotpassword from "./Components/Forgotpassword.jsx";
+import Payment from "./Components/Payment.jsx";
+import Editinformation from "./Components/Editinformation.jsx";
 
 const PrivateRoute = ({ element }) => {
   return element;
@@ -63,6 +66,14 @@ const App = () => {
         <Route
           element={
             <Layout>
+              <PrivateRoute element={<Payment />} />
+            </Layout>
+          }
+          path="/payment"
+        />
+        <Route
+          element={
+            <Layout>
               <PrivateRoute element={<Ordersummary />} />
             </Layout>
           }
@@ -76,6 +87,14 @@ const App = () => {
           }
           path="/profile"
         />
+        <Route
+          element={
+            <Layout>
+              <PrivateRoute element={<Editinformation />} />
+            </Layout>
+          }
+          path="/editinformation"
+        />
         <Route // New Route for UpdateCredentials component
           element={
             <Layout>
@@ -83,6 +102,10 @@ const App = () => {
             </Layout>
           }
           path="/update-credentials"
+        />
+        <Route // New Route for UpdateCredentials component
+          element={<PrivateRoute element={<Forgotpassword />} />}
+          path="/forgotpassword"
         />
       </Routes>
     </Router>

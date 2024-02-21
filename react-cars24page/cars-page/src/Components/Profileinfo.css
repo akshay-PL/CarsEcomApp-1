@@ -40,4 +40,18 @@
   background-color: #026cdd; 
 }
 
+.custom-drawer {
+  width: 50vw; /* Set the width of the Drawer to 50% of the viewport width */
+}
+
+.drawer-content {
+  padding: 20px; /* Add padding as needed */
+}
+.user_profile_img {
+  width: 30px;
+  height: 30px;
+  padding: auto;
+}
+
+
   

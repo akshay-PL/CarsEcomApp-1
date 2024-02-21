@@ -18,7 +18,6 @@ function CheckoutPage() {
     zipCode: "",
     is_shipping_add_same: false,
   });
-
   const [billingFormData, setBillingFormData] = useState({
     fullName: "",
     email: "",
@@ -26,15 +25,6 @@ function CheckoutPage() {
     city: "",
     zipCode: "",
   });
-
-  const [paymentFormData, setPaymentFormData] = useState({
-    nameOnCard: "",
-    cardNumber: "",
-    expiryMonth: "",
-    expiryYear: "",
-    cvv: "",
-  });
-
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
 
   useEffect(() => {
@@ -62,16 +52,11 @@ function CheckoutPage() {
       Object.values(billingFormData).every((val) => val !== "") &&
       (!shippingFormData.is_shipping_add_same ||
         Object.values(shippingFormData).every((val) => val !== ""));
-    const isPaymentFormFilled = Object.values(paymentFormData).every(
-      (val) => val !== ""
-    );
 
-    setAllFieldsFilled(
-      isShippingFormFilled && isBillingFormFilled && isPaymentFormFilled
-    );
-  }, [shippingFormData, billingFormData, paymentFormData]);
+    setAllFieldsFilled(isShippingFormFilled && isBillingFormFilled);
+  }, [shippingFormData, billingFormData]);
 
-  const handleShippingAddressSubmit = async () => {
+  const handleShippingAddressSubmit = async (e) => {
     e.preventDefault(); // Prevent form submission
 
     try {
@@ -86,7 +71,7 @@ function CheckoutPage() {
     }
   };
 
-  const handleBillingAddressSubmit = async () => {
+  const handleBillingAddressSubmit = async (e) => {
     e.preventDefault(); // Prevent form submission
 
     const isBillingFormFilled = Object.values(billingFormData).every(
@@ -108,16 +93,8 @@ function CheckoutPage() {
       alert("Failed to add billing address. Please try again.");
     }
   };
-
-  const handlePaymentSubmit = async () => {
-    e.preventDefault(); // Prevent form submission
-
-    try {
-      alert("Payment submitted successfully");
-    } catch (error) {
-      console.error("Error submitting payment:", error);
-      alert("Failed to submit payment. Please try again.");
-    }
+  const proceedtopayment = async () => {
+    navigate("/payment");
   };
 
   const handleShippingChange = (e) => {
@@ -136,15 +113,7 @@ function CheckoutPage() {
     }));
   };
 
-  const handlePaymentChange = (e) => {
-    const { name, value } = e.target;
-    setPaymentFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSendDetails = async (e) => {
     e.preventDefault();
 
     // Retrieve user data from session storage
@@ -175,8 +144,6 @@ function CheckoutPage() {
       // Make a POST request to the /ordersummary endpoint
       await axios.post("http://localhost:3000/ordersummary", orderData);
       alert("Order placed successfully!");
-      // Navigate to the ordersummary route after successful order placement
-      navigate("/ordersummary");
     } catch (error) {
       console.error("Error placing order:", error);
       alert("Failed to place order. Please try again.");
@@ -232,7 +199,6 @@ function CheckoutPage() {
             </p>
           </div>
         )}
-
         {carDetails && (
           <div className="product-image">
             <p>Image URL: {carDetails.image}</p>
@@ -240,8 +206,7 @@ function CheckoutPage() {
           </div>
         )}
       </div>
-
-      <form onSubmit={handleSubmit} className="checkout-form">
+      <form onSubmit={handleSendDetails} className="checkout-form">
         <div className="shipping-info">
           <h2>Shipping Information</h2>
           <input
@@ -304,15 +269,14 @@ function CheckoutPage() {
             Same as billing address
           </label>
           <br />
-          <button
-            onClick={handleShippingAddressSubmit}
-            className="checkout-button"
-          >
-            Confirm Shipping Address
-          </button>
         </div>
 
-        <div className="billing-info">
+        <div
+          className="billing-info"
+          style={{
+            display: shippingFormData.is_shipping_add_same ? "none" : "block",
+          }}
+        >
           <h2>Billing Information</h2>
           <input
             type="text"
@@ -364,74 +328,19 @@ function CheckoutPage() {
             className="input-field"
           />
           <br />
-          <button
-            onClick={handleBillingAddressSubmit}
-            className="checkout-button"
-          >
-            Confirm Billing Address
-          </button>
         </div>
-
-        <div className="payment-info">
-          <h2>Payment Information</h2>
-          <input
-            type="text"
-            name="nameOnCard"
-            value={paymentFormData.nameOnCard}
-            onChange={handlePaymentChange}
-            placeholder="Name on Card"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="cardNumber"
-            value={paymentFormData.cardNumber}
-            onChange={handlePaymentChange}
-            placeholder="Card Number"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="expiryMonth"
-            value={paymentFormData.expiryMonth}
-            onChange={handlePaymentChange}
-            placeholder="Expiry Month"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="expiryYear"
-            value={paymentFormData.expiryYear}
-            onChange={handlePaymentChange}
-            placeholder="Expiry Year"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="cvv"
-            value={paymentFormData.cvv}
-            onChange={handlePaymentChange}
-            placeholder="CVV"
-            required
-            className="input-field"
-          />
-          <br />
-          <button
-            onClick={handlePaymentSubmit}
-            className="checkout-button"
-            disabled={!allFieldsFilled}
-          >
-            Buy
-          </button>
-        </div>
+        <button
+          onClick={(e) => {
+            handleShippingAddressSubmit(e);
+            handleBillingAddressSubmit(e);
+            handleSendDetails(e);
+            proceedtopayment(e);
+          }}
+          className="checkout-button"
+          disabled={!allFieldsFilled}
+        >
+          Proceed to Payment
+        </button>
       </form>
     </div>
   );

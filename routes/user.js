@@ -1599,7 +1599,7 @@
  *     tags:
  *       - Authentication
  *     summary: User Signup
- *     description: Register a new user with username, email, and password.
+ *     description: Register a new user with username, email, password, and additional information.
  *     requestBody:
  *       required: true
  *       content:
@@ -1616,6 +1616,26 @@
  *               password:
  *                 type: string
  *                 description: The password of the user.
+ *               firstname:
+ *                 type: string
+ *                 description: The first name of the user.
+ *               lastname:
+ *                 type: string
+ *                 description: The last name of the user.
+ *               address:
+ *                 type: string
+ *                 description: The address of the user.
+ *               date_of_birth:
+ *                 type: string
+ *                 format: date
+ *                 description: The date of birth of the user (YYYY-MM-DD).
+ *               contact:
+ *                 type: string
+ *                 description: The contact information of the user.
+ *               role:
+ *                 type: string
+ *                 default: null
+ *                 description: The role of the user (optional).
  *     responses:
  *       201:
  *         description: User successfully registered
@@ -1636,9 +1656,9 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   description: Username, Email, or password missing.
+ *                   description: Required fields are missing.
  *             example:
- *               error: "Username or Email or password missing"
+ *               error: "Required fields are missing"
  *       409:
  *         description: Conflict
  *         content:
@@ -1665,14 +1685,171 @@
  *               error: "Something went wrong"
  */
 
+
+
+
+
+
+
 /**
  * @swagger
- * /signup/:username:
+ * /signup/{username}:
+ *   get:
+ *     tags:
+ *       - Authentication
+ *     summary: Get user by username
+ *     description: Retrieve user information by username.
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         description: The username of the user.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User information retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                   description: The username of the user.
+ *                 email:
+ *                   type: string
+ *                   description: The email of the user.
+ *                 firstname:
+ *                   type: string
+ *                   description: The first name of the user.
+ *                 lastname:
+ *                   type: string
+ *                   description: The last name of the user.
+ *                 address:
+ *                   type: string
+ *                   description: The address of the user.
+ *                 date_of_birth:
+ *                   type: string
+ *                   format: date
+ *                   description: The date of birth of the user (YYYY-MM-DD).
+ *                 contact:
+ *                   type: string
+ *                   description: The contact information of the user.
+ *                 role:
+ *                   type: string
+ *                   description: The role of the user.
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: User not found.
+ *             example:
+ *               error: "User not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Something went wrong while fetching user information.
+ *             example:
+ *               error: "Internal Server Error"
+ */
+
+
+
+
+
+/**
+ * @swagger
+ * /signup:
+ *   get:
+ *     tags:
+ *       - Authentication
+ *     summary: Get all users
+ *     description: Retrieve a list of all registered users.
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                     description: The username of the user.
+ *                   email:
+ *                     type: string
+ *                     description: The email of the user.
+ *                   firstname:
+ *                     type: string
+ *                     description: The first name of the user.
+ *                   lastname:
+ *                     type: string
+ *                     description: The last name of the user.
+ *                   address:
+ *                     type: string
+ *                     description: The address of the user.
+ *                   date_of_birth:
+ *                     type: string
+ *                     format: date
+ *                     description: The date of birth of the user (YYYY-MM-DD).
+ *                   contact:
+ *                     type: string
+ *                     description: The contact information of the user.
+ *                   role:
+ *                     type: string
+ *                     description: The role of the user.
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Something went wrong while fetching users.
+ *             example:
+ *               error: "Internal Server Error"
+ */
+
+
+
+
+
+
+
+
+
+
+/**
+ * @swagger
+ * /signup/{username}:
  *   put:
  *     tags:
  *       - Authentication
  *     summary: Update User Information
- *     description: Update user information including username, email, or password.
+ *     description: Update user information including username, email, password, firstname, lastname, address, date_of_birth, and contact.
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         description: The username of the user.
+ *         schema:
+ *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -1680,15 +1857,28 @@
  *           schema:
  *             type: object
  *             properties:
- *               username:
- *                 type: string
- *                 description: The username of the user.
  *               email:
  *                 type: string
- *                 description: The email of the user.
+ *                 description: The updated email of the user.
  *               password:
  *                 type: string
- *                 description: The password of the user.
+ *                 description: The updated password of the user.
+ *               firstname:
+ *                 type: string
+ *                 description: The updated firstname of the user.
+ *               lastname:
+ *                 type: string
+ *                 description: The updated lastname of the user.
+ *               address:
+ *                 type: string
+ *                 description: The updated address of the user.
+ *               date_of_birth:
+ *                 type: string
+ *                 format: date
+ *                 description: The updated date of birth of the user.
+ *               contact:
+ *                 type: string
+ *                 description: The updated contact information of the user.
  *     responses:
  *       200:
  *         description: User information updated successfully
@@ -1709,9 +1899,9 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   description: Username, Email, or password missing.
+ *                   description: Email or password missing.
  *             example:
- *               error: "Username or Email or password missing"
+ *               error: "Email or password missing"
  *       404:
  *         description: User not found
  *         content:
@@ -1737,6 +1927,44 @@
  *             example:
  *               error: "Something went wrong"
  */
+
+
+
+/**
+ * @swagger
+ * paths:
+ *   /signup/{email}/password:
+ *     patch:
+ *       summary: Update user password
+ *       description: Update the password for a specific user identified by their email.
+ *       parameters:
+ *         - in: path
+ *           name: email
+ *           required: true
+ *           description: The email of the user whose password needs to be updated.
+ *           schema:
+ *             type: string
+ *         - in: body
+ *           name: password
+ *           description: New password for the user
+ *           required: true
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newPassword:
+ *                 type: string
+ *                 description: New password
+ *       responses:
+ *         '200':
+ *           description: Password updated successfully
+ *         '400':
+ *           description: Bad request. Invalid input provided.
+ *         '404':
+ *           description: User not found
+ *         '500':
+ *           description: Internal server error
+ */
+
 
 
 

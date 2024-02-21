@@ -79,13 +79,49 @@ app.use('/orderitems', orderItemsRouter);
 
 
 
+app.get("/signup", async (req, res) => {
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool.request().query('SELECT * FROM Signup');
+
+    res.status(200).json(result.recordset);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Something went wrong while fetching user information" });
+  }
+});
+
+
+app.get("/signup/:username", async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input("username", sql.VarChar, username)
+      .query('SELECT * FROM Signup WHERE username = @username');
+
+    if (result.recordset.length > 0) {
+      res.status(200).json(result.recordset[0]); // Assuming username is unique
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Something went wrong while fetching user information" });
+  }
+});
+
+
+
 
 // Signup endpoint
 app.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, firstname, lastname, address, date_of_birth, contact, role } = req.body;
   try {
-    if (!username || !email || !password) {
-      return res.status(400).json({ error: "Username, email, or password missing" });
+    if (!username || !email || !password || !firstname || !lastname || !address || !date_of_birth || !contact || !role) {
+      return res.status(400).json({ error: "Required fields are missing" });
     }
 
     const pool = await sql.connect(dbConfig);
@@ -94,7 +130,13 @@ app.post("/signup", async (req, res) => {
       .input('username', sql.VarChar, username)
       .input('email', sql.VarChar, email)
       .input('password', sql.VarChar, password)
-      .query('INSERT INTO Signup (username, email, password) VALUES (@username, @email, @password)');
+      .input('firstname', sql.VarChar, firstname)
+      .input('lastname', sql.VarChar, lastname)
+      .input('address', sql.VarChar, address)
+      .input('date_of_birth', sql.Date, date_of_birth)
+      .input('contact', sql.VarChar, contact)
+      .input('role', sql.VarChar, role)
+      .query('INSERT INTO Signup (username, email, password, firstname, lastname, address, date_of_birth, contact, role) VALUES (@username, @email, @password, @firstname, @lastname, @address, @date_of_birth, @contact, @role)');
       
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
@@ -105,6 +147,85 @@ app.post("/signup", async (req, res) => {
     res.status(500).json({ error: "Something went wrong during signup process" });
   }
 });
+
+
+app.put("/signup/:username", async (req, res) => {
+  const username = req.params.username;
+  const { email, password, firstname, lastname, address, date_of_birth, contact } = req.body;
+  
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input("username", sql.VarChar, username)
+      .input("email", sql.VarChar, email)
+      .input("password", sql.VarChar, password)
+      .input("firstname", sql.VarChar, firstname)
+      .input("lastname", sql.VarChar, lastname)
+      .input("address", sql.VarChar, address)
+      .input("date_of_birth", sql.Date, date_of_birth)
+      .input("contact", sql.VarChar, contact)
+      .query(
+        `UPDATE Signup 
+         SET email = @email,
+             password = @password,
+             firstname = @firstname,
+             lastname = @lastname,
+             address = @address,
+             date_of_birth = @date_of_birth,
+             contact = @contact
+         WHERE username = @username` // Update based on username
+      );
+
+    if (result.rowsAffected[0] > 0) {
+      return res
+        .status(200)
+        .json({ message: "User information updated successfully" });
+    } else {
+      return res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "Something went wrong during the update process" });
+  }
+});
+
+
+app.patch("/forgotpassword/:email", async (req, res) => {
+  const email = req.params.email;
+  const { newPassword } = req.body;
+
+  try {
+    const pool = await sql.connect(dbConfig);
+    const result = await pool
+      .request()
+      .input("email", sql.VarChar, email)
+      .input("password", sql.VarChar, newPassword)
+      .query(
+        `UPDATE Signup 
+         SET password = @password 
+         WHERE email = @email`
+      );
+
+    if (result.rowsAffected[0] > 0) {
+      return res
+        .status(200)
+        .json({ message: "Password updated successfully" });
+    } else {
+      return res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(500)
+      .json({ error: "Something went wrong during the password update process" });
+  }
+});
+
+
+
 
 
 
@@ -165,38 +286,7 @@ app.get("/protected", verifyToken, (req, res) => {
 });
 
 
-app.put("/signup/:username", async (req, res) => {
-  const username = req.params.username;
-  const { email, password } = req.body;
-  
-  try {
-    const pool = await sql.connect(dbConfig);
-    const result = await pool
-      .request()
-      .input("username", sql.VarChar, username)
-      .input("email", sql.VarChar, email)
-      .input("password", sql.VarChar, password)
-      .query(
-        `UPDATE Signup 
-         SET email = @email, 
-             password = @password 
-         WHERE username = @username` // Update based on username
-      );
 
-    if (result.rowsAffected[0] > 0) {
-      return res
-        .status(200)
-        .json({ message: "User information updated successfully" });
-    } else {
-      return res.status(404).json({ error: "User not found" });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res
-      .status(500)
-      .json({ error: "Something went wrong during the update process" });
-  }
-});
 
 
 

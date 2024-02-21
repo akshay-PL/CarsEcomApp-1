@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import axiosInstance from "./Axiosinterceptor.jsx"; // Import the axios instance
+import axiosInstance from "./Axiosinterceptor.jsx";
 import email_icon from "./Assets/email.png";
 import password_icon from "./Assets/password.png";
 import user_icon from "./Assets/person.png";
@@ -13,6 +13,12 @@ const LoginSignup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [address, setAddress] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [contact, setContact] = useState("");
+  const [role, setRole] = useState("");
   const [showMain, setShowMain] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -53,12 +59,25 @@ const LoginSignup = () => {
 
   const handleSignup = async () => {
     try {
+      let roleToSend = role; // Initialize roleToSend with the value from the input field
+
+      // Check if the entered role is "systemadmin" and set roleToSend to "admin"
+      if (role === "systemadmin") {
+        roleToSend = "admin";
+      }
+
       const response = await axiosInstance.post(
         "http://localhost:3000/signup",
         {
           username,
           email,
           password,
+          firstname,
+          lastname,
+          address,
+          date_of_birth: dateOfBirth,
+          contact,
+          role: roleToSend, // Use roleToSend instead of the original role
         }
       );
 
@@ -81,13 +100,19 @@ const LoginSignup = () => {
   };
 
   const handleForgotPassword = () => {
-    alert("Currently not functional. Update is coming soon !");
+    navigate("/forgotpassword");
   };
 
   const resetFields = () => {
     setUsername("");
     setEmail("");
     setPassword("");
+    setFirstname("");
+    setLastname("");
+    setAddress("");
+    setDateOfBirth("");
+    setContact("");
+    setRole("");
   };
 
   const handleToggleMain = () => {
@@ -139,6 +164,60 @@ const LoginSignup = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
+          {/* Additional fields for signup */}
+          {action === "Sign up" && (
+            <>
+              <div className="input">
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                />
+              </div>
+              <div className="input">
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                />
+              </div>
+              <div className="input">
+                <input
+                  type="text"
+                  placeholder="Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+              <div className="input">
+                <input
+                  type="date"
+                  placeholder="Date of Birth"
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                />
+              </div>
+              <div className="input">
+                <input
+                  type="text"
+                  placeholder="Contact"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                />
+              </div>
+              <div className="input">
+                <input
+                  type="text"
+                  placeholder="Role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                />
+              </div>
+            </>
+          )}
         </div>
 
         {action === "Login" && (
