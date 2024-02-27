@@ -1,7 +1,5 @@
-// Details.jsx
-
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Details.css";
 import withAuth from "./Components/PrivateRoute";
@@ -10,7 +8,7 @@ const Details = () => {
   const { id } = useParams();
   const [details, setDetails] = useState({});
   const location = useLocation();
-  const navigate = useNavigate(); // Get the navigation function
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -25,18 +23,15 @@ const Details = () => {
     fetchDetails();
   }, [id]);
 
-  const carImage = location.state ? location.state.image : "";
-
   // Function to handle click event for buying a car
   const handleBuyClick = () => {
-    navigate(`/buynowcheckout/${id}`); // Navigate to BuyNowCheckout.jsx
+    navigate(`/buynowcheckout/${id}`);
   };
 
   return (
     <div className="details-container">
-      {/* Use a button for navigation */}
       <button
-        onClick={() => navigate("/main")} // Use navigate function to navigate
+        onClick={() => navigate("/main")}
         className="back-to-main-button"
         style={{
           position: "absolute",
@@ -50,7 +45,12 @@ const Details = () => {
       {details && (
         <div className="car-details">
           <div className="image-box">
-            <img src={carImage} alt="" className="car-image" />
+            {/* Use details.productimage directly */}
+            <img
+              src={`data:image/jpeg;base64,${details.productimage}`}
+              alt=""
+              className="car-image"
+            />
           </div>
           <div className="details-info-box">
             <div className="details-info">

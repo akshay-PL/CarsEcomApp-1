@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import InputAdornment from "@mui/material/InputAdornment";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box"; // Import Box component for displaying error message
 import withAuth from "./PrivateRoute";
 import "./Editinformation.css";
 
@@ -7,23 +12,21 @@ const Editinformation = () => {
   const [userData, setUserData] = useState(null);
   const [editedData, setEditedData] = useState({
     email: "",
-    password: "",
     firstname: "",
     lastname: "",
     address: "",
     date_of_birth: "",
     contact: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
   const [editableFields, setEditableFields] = useState({
     email: false,
-    password: false,
     firstname: false,
     lastname: false,
     address: false,
     date_of_birth: false,
     contact: false,
   });
+  const [formError, setFormError] = useState(false); // State to manage form error
 
   useEffect(() => {
     const userString = sessionStorage.getItem("user");
@@ -55,7 +58,6 @@ const Editinformation = () => {
           address: data.address,
           date_of_birth: dateOfBirth,
           contact: data.contact,
-          password: data.password, // Ensure password is set if provided by backend
         }));
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -73,11 +75,15 @@ const Editinformation = () => {
     }));
   };
 
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
-
   const handleSave = async () => {
+    // Check if any field is empty
+    for (const key in editedData) {
+      if (editedData[key].trim() === "") {
+        setFormError(true);
+        return;
+      }
+    }
+
     const confirmed = window.confirm("Are you sure you want to save changes?");
     if (confirmed) {
       try {
@@ -109,152 +115,198 @@ const Editinformation = () => {
   const handleEditField = (fieldName) => {
     setEditableFields((prevEditableFields) => ({
       ...prevEditableFields,
-      [fieldName]: true,
+      [fieldName]: !prevEditableFields[fieldName], // Toggle the value
     }));
   };
 
   return (
     <div className="edit-container">
-      <Button variant="contained" color="primary" className="hello-user-button">
-        Hello User!
-      </Button>
+      <Typography variant="h5" gutterBottom>
+        User Information
+      </Typography>
 
       <div className="edit-info">
         {userData && (
-          <form>
-            <div className="input-row">
-              <label>Email:</label>
-              <input
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Email"
                 type="text"
                 name="email"
                 value={editedData.email}
                 onChange={handleChange}
-                className="input-field"
+                fullWidth
                 disabled={!editableFields.email}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleEditField("email")}
+                      >
+                        Edit
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleEditField("email")}
-              >
-                Edit
-              </Button>
-            </div>
-            <div className="input-row">
-              <label>Password:</label>
-              <div className="password-row">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={editedData.password}
-                  onChange={handleChange}
-                  className="input-field"
-                  disabled={!editableFields.password}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleEditField("password")}
-                >
-                  Edit
-                </Button>
-              </div>
-            </div>
-            <div className="input-row">
-              <label>First Name:</label>
-              <input
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="First Name"
                 type="text"
                 name="firstname"
                 value={editedData.firstname}
                 onChange={handleChange}
-                className="input-field"
+                fullWidth
                 disabled={!editableFields.firstname}
+                error={formError && !editedData.firstname.trim()} // Apply error state to the TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleEditField("firstname")}
+                      >
+                        Edit
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleEditField("firstname")}
-              >
-                Edit
-              </Button>
-            </div>
-            <div className="input-row">
-              <label>Last Name:</label>
-              <input
+              {formError && !editedData.firstname.trim() && (
+                <Box mt={1} color="error.main">
+                  Required
+                </Box>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Last Name"
                 type="text"
                 name="lastname"
                 value={editedData.lastname}
                 onChange={handleChange}
-                className="input-field"
+                fullWidth
                 disabled={!editableFields.lastname}
+                error={formError && !editedData.lastname.trim()} // Apply error state to the TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleEditField("lastname")}
+                      >
+                        Edit
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleEditField("lastname")}
-              >
-                Edit
-              </Button>
-            </div>
-            <div className="input-row">
-              <label>Address:</label>
-              <input
+              {formError && !editedData.lastname.trim() && (
+                <Box mt={1} color="error.main">
+                  Required
+                </Box>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Address"
                 type="text"
                 name="address"
                 value={editedData.address}
                 onChange={handleChange}
-                className="input-field"
+                fullWidth
                 disabled={!editableFields.address}
+                error={formError && !editedData.address.trim()} // Apply error state to the TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleEditField("address")}
+                      >
+                        Edit
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleEditField("address")}
-              >
-                Edit
-              </Button>
-            </div>
-            <div className="input-row">
-              <label>Date of Birth:</label>
-              <input
+              {formError && !editedData.address.trim() && (
+                <Box mt={1} color="error.main">
+                  Required
+                </Box>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Date of Birth"
                 type="date"
                 name="date_of_birth"
                 value={editedData.date_of_birth}
                 onChange={handleChange}
-                className="input-field"
+                fullWidth
                 disabled={!editableFields.date_of_birth}
+                error={formError && !editedData.date_of_birth.trim()} // Apply error state to the TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleEditField("date_of_birth")}
+                      >
+                        Edit
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleEditField("date_of_birth")}
-              >
-                Edit
-              </Button>
-            </div>
-            <div className="input-row">
-              <label>Contact:</label>
-              <input
+              {formError && !editedData.date_of_birth.trim() && (
+                <Box mt={1} color="error.main">
+                  Required
+                </Box>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Contact"
                 type="text"
                 name="contact"
                 value={editedData.contact}
                 onChange={handleChange}
-                className="input-field"
+                fullWidth
                 disabled={!editableFields.contact}
+                error={formError && !editedData.contact.trim()} // Apply error state to the TextField
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleEditField("contact")}
+                      >
+                        Edit
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleEditField("contact")}
-              >
-                Edit
-              </Button>
-            </div>
-          </form>
+              {formError && !editedData.contact.trim() && (
+                <Box mt={1} color="error.main">
+                  Required
+                </Box>
+              )}
+            </Grid>
+          </Grid>
         )}
       </div>
-      <Button variant="contained" color="primary" onClick={handleSave}>
-        Save Changes
+      <Button variant="text" color="primary" onClick={handleSave}>
+        Update and Save
       </Button>
     </div>
   );

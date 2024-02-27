@@ -1,4 +1,3 @@
-// In your Navbar.jsx file
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import carlogo from "./Assets/carlogo.jpg";
@@ -8,21 +7,23 @@ import downarrow from "./Assets/down.png";
 import logouticon from "./Assets/logouticon.png";
 import Profileinfo from "./Profileinfo";
 import ProfileModal from "./profileModal/profileModal";
+import Editinformation from "./Editinformation";
+import { Drawer } from "@mui/material";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
 
   const dropdownRef = useRef(null);
+  const drawerRef = useRef(null);
 
   const handleNavigation = (route) => {
     navigate(route);
   };
 
   const handleClose = () => {
-    setOpenProfile(!openProfile);
+    setOpenProfile(false);
   };
 
   const handleLogout = () => {
@@ -35,8 +36,14 @@ const Navbar = () => {
   };
 
   const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target) &&
+      drawerRef.current &&
+      !drawerRef.current.contains(event.target)
+    ) {
       setShowDropdown(false);
+      setOpenProfile(false);
     }
   };
 
@@ -67,6 +74,12 @@ const Navbar = () => {
         <div className="heading">CarsEcom</div>
       </div>
       <div className="nav-links">
+        <div
+          className="nav-link"
+          onClick={() => handleNavigation("/productstore")}
+        >
+          Add product
+        </div>
         <div className="nav-link" onClick={() => handleNavigation("/about")}>
           About Us
         </div>
@@ -98,7 +111,19 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      <ProfileModal open={openProfile} handleClose={handleClose} />
+      <ProfileModal open={false} handleClose={handleClose} />
+      <Drawer
+        ref={drawerRef}
+        anchor="right"
+        open={openProfile}
+        onClose={() => setOpenProfile(false)} // Close the drawer on close event
+        className="custom-drawer"
+        PaperProps={{ style: { width: "50vw" } }} // Set the width of the Paper component inside Drawer
+      >
+        <div className="drawer-content">
+          <Editinformation />
+        </div>
+      </Drawer>
     </div>
   );
 };

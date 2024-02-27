@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import "./Buynowcheckout.css";
 import withAuth from "./Components/PrivateRoute";
 
@@ -8,7 +16,7 @@ function CheckoutPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [carImage, setCarImage] = useState(null);
+  const [carImage, setCarImage] = useState(null); // State to store the decoded image
   const [carDetails, setCarDetails] = useState(null);
   const [shippingFormData, setShippingFormData] = useState({
     fullName: "",
@@ -26,15 +34,22 @@ function CheckoutPage() {
     zipCode: "",
   });
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
+  const [hideBillingInfo, setHideBillingInfo] = useState(false);
+  const [checkboxClicked, setCheckboxClicked] = useState(false);
+  const [shippingAlertOpen, setShippingAlertOpen] = useState(false);
+  const [billingAlertOpen, setBillingAlertOpen] = useState(false);
 
   useEffect(() => {
     const fetchCarDetails = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/cars/${id}`);
         setCarDetails(response.data);
-        if (location && location.state && location.state.image) {
-          setCarImage(location.state.image);
-        }
+
+        // Decode base64 image and set it to state
+        const decodedImage = `data:image/jpeg;base64,${response.data.productimage}`;
+        setCarImage(decodedImage);
+
+        // Other existing logic...
       } catch (error) {
         console.error("Error fetching car details:", error);
       }
@@ -57,14 +72,17 @@ function CheckoutPage() {
   }, [shippingFormData, billingFormData]);
 
   const handleShippingAddressSubmit = async (e) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
 
     try {
       await axios.post(
         "http://localhost:3000/shippingaddress",
         shippingFormData
       );
-      alert("Shipping address received successfully");
+      setShippingAlertOpen(true); // Display Shipping Address received alert
+      setTimeout(() => {
+        setBillingAlertOpen(true); // Display Billing Address received alert after 1 second
+      }, 1000);
     } catch (error) {
       console.error("Error adding shipping address:", error);
       alert("Failed to add shipping address. Please try again.");
@@ -72,7 +90,7 @@ function CheckoutPage() {
   };
 
   const handleBillingAddressSubmit = async (e) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
 
     const isBillingFormFilled = Object.values(billingFormData).every(
       (val) => val !== ""
@@ -87,40 +105,26 @@ function CheckoutPage() {
         "http://localhost:3000/billing-address",
         billingFormData
       );
-      alert("Billing address received successfully");
+      setTimeout(() => {
+        setBillingAlertOpen(true); // Display Billing Address received alert after a delay
+      }, 1000);
     } catch (error) {
       console.error("Error adding billing address:", error);
       alert("Failed to add billing address. Please try again.");
+      return; // Exit early if there's an error
     }
   };
-  const proceedtopayment = async () => {
+
+  const proceedToPayment = () => {
     navigate("/payment");
-  };
-
-  const handleShippingChange = (e) => {
-    const { name, value } = e.target;
-    setShippingFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleBillingChange = (e) => {
-    const { name, value } = e.target;
-    setBillingFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
   };
 
   const handleSendDetails = async (e) => {
     e.preventDefault();
 
-    // Retrieve user data from session storage
     const userData = JSON.parse(sessionStorage.getItem("user"));
     const { userName, email } = userData;
 
-    // Gather all the necessary information
     const orderData = {
       user_username: userName,
       user_email: email,
@@ -141,33 +145,66 @@ function CheckoutPage() {
     };
 
     try {
-      // Make a POST request to the /ordersummary endpoint
       await axios.post("http://localhost:3000/ordersummary", orderData);
-      alert("Order placed successfully!");
+      setShippingAlertOpen(true);
+      setTimeout(() => {
+        setBillingAlertOpen(true);
+        setTimeout(() => {
+          proceedToPayment();
+        }, 1000);
+      }, 1000);
     } catch (error) {
       console.error("Error placing order:", error);
       alert("Failed to place order. Please try again.");
     }
   };
 
+  const handleShippingChange = (e) => {
+    const { name, value } = e.target;
+    setShippingFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleBillingChange = (e) => {
+    const { name, value } = e.target;
+    setBillingFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
+
+    const isShippingInfoEmpty = Object.values(shippingFormData).some(
+      (val) => val === ""
+    );
+
+    if (isShippingInfoEmpty) {
+      return;
+    }
+
+    setCheckboxClicked(true);
+
     setShippingFormData((prevState) => ({
       ...prevState,
       [name]: checked,
     }));
+
     if (checked) {
-      setBillingFormData({
-        ...shippingFormData,
-      });
+      setHideBillingInfo(true);
+      setBillingFormData((prevState) => ({
+        ...prevState,
+        fullName: shippingFormData.fullName,
+        email: shippingFormData.email,
+        address: shippingFormData.address,
+        city: shippingFormData.city,
+        zipCode: shippingFormData.zipCode,
+      }));
     } else {
-      setBillingFormData({
-        fullName: "",
-        email: "",
-        address: "",
-        city: "",
-        zipCode: "",
-      });
+      setHideBillingInfo(false);
     }
   };
 
@@ -179,169 +216,216 @@ function CheckoutPage() {
       >
         <span>&#9664;</span>
       </button>
-      <h1 className="checkout-heading">Checkout</h1>
+      <Typography variant="h5" className="checkout-heading" gutterBottom>
+        Checkout
+      </Typography>
+      {/* Displaying Product Details */}
+      {carDetails && (
+        <div className="product-details">
+          <Typography variant="h6" gutterBottom>
+            Product Details
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Brand: {carDetails.brand}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Model: {carDetails.model}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Year: {carDetails.year}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Price: {carDetails.price}
+          </Typography>
+          {/* Add more details as needed */}
+          {carImage && (
+            <img src={carImage} alt="Product" className="product-image" />
+          )}
+        </div>
+      )}
 
-      <div className="product-information-container">
-        {carDetails && (
-          <div className="product-info">
-            <h2>Product Information</h2>
-            <p>
-              <strong>Brand:</strong> {carDetails.brand}
-            </p>
-            <p>
-              <strong>Type:</strong> {carDetails.type}
-            </p>
-            <p>
-              <strong>Model:</strong> {carDetails.model}
-            </p>
-            <p>
-              <strong>Price:</strong> {carDetails.price}
-            </p>
-          </div>
-        )}
-        {carDetails && (
-          <div className="product-image">
-            <p>Image URL: {carDetails.image}</p>
-            <img src={carDetails.image} alt="Car" />
-          </div>
-        )}
-      </div>
-      <form onSubmit={handleSendDetails} className="checkout-form">
-        <div className="shipping-info">
-          <h2>Shipping Information</h2>
-          <input
-            type="text"
-            name="fullName"
-            value={shippingFormData.fullName}
-            onChange={handleShippingChange}
-            placeholder="Full Name"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="email"
-            name="email"
-            value={shippingFormData.email}
-            onChange={handleShippingChange}
-            placeholder="Email"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="address"
-            value={shippingFormData.address}
-            onChange={handleShippingChange}
-            placeholder="Address"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="city"
-            value={shippingFormData.city}
-            onChange={handleShippingChange}
-            placeholder="City"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="zipCode"
-            value={shippingFormData.zipCode}
-            onChange={handleShippingChange}
-            placeholder="Zip Code"
-            required
-            className="input-field"
-          />
-          <br />
-          <label>
-            <input
-              type="checkbox"
-              name="is_shipping_add_same"
-              onChange={handleCheckboxChange}
-              className="checkbox"
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <div className="shipping-info">
+            <Typography variant="h6" gutterBottom>
+              Shipping Information
+            </Typography>
+            <TextField
+              type="text"
+              name="fullName"
+              value={shippingFormData.fullName}
+              onChange={handleShippingChange}
+              label="Full Name"
+              required
+              error={checkboxClicked && shippingFormData.fullName === ""}
+              fullWidth
+              margin="normal"
             />
-            Same as billing address
-          </label>
-          <br />
-        </div>
+            <TextField
+              type="email"
+              name="email"
+              value={shippingFormData.email}
+              onChange={handleShippingChange}
+              label="Email"
+              required
+              error={checkboxClicked && shippingFormData.email === ""}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              type="text"
+              name="address"
+              value={shippingFormData.address}
+              onChange={handleShippingChange}
+              label="Address"
+              required
+              error={checkboxClicked && shippingFormData.address === ""}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              type="text"
+              name="city"
+              value={shippingFormData.city}
+              onChange={handleShippingChange}
+              label="City"
+              required
+              error={checkboxClicked && shippingFormData.city === ""}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              type="text"
+              name="zipCode"
+              value={shippingFormData.zipCode}
+              onChange={handleShippingChange}
+              label="Zip Code"
+              required
+              error={checkboxClicked && shippingFormData.zipCode === ""}
+              fullWidth
+              margin="normal"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={shippingFormData.is_shipping_add_same}
+                  onChange={handleCheckboxChange}
+                  name="is_shipping_add_same"
+                />
+              }
+              label="Same as billing address"
+            />
+          </div>
+        </Grid>
+        {!hideBillingInfo && (
+          <Grid item xs={12} sm={6}>
+            <div className="billing-info">
+              <Typography variant="h6" gutterBottom>
+                Billing Information
+              </Typography>
+              <TextField
+                type="text"
+                name="fullName"
+                value={billingFormData.fullName}
+                onChange={handleBillingChange}
+                label="Full Name"
+                required
+                error={checkboxClicked && billingFormData.fullName === ""}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                type="email"
+                name="email"
+                value={billingFormData.email}
+                onChange={handleBillingChange}
+                label="Email"
+                required
+                error={checkboxClicked && billingFormData.email === ""}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                type="text"
+                name="address"
+                value={billingFormData.address}
+                onChange={handleBillingChange}
+                label="Address"
+                required
+                error={checkboxClicked && billingFormData.address === ""}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                type="text"
+                name="city"
+                value={billingFormData.city}
+                onChange={handleBillingChange}
+                label="City"
+                required
+                error={checkboxClicked && billingFormData.city === ""}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                type="text"
+                name="zipCode"
+                value={billingFormData.zipCode}
+                onChange={handleBillingChange}
+                label="Zip Code"
+                required
+                error={checkboxClicked && billingFormData.zipCode === ""}
+                fullWidth
+                margin="normal"
+              />
+            </div>
+          </Grid>
+        )}
+      </Grid>
 
-        <div
-          className="billing-info"
-          style={{
-            display: shippingFormData.is_shipping_add_same ? "none" : "block",
-          }}
+      <Snackbar
+        open={shippingAlertOpen}
+        autoHideDuration={6000}
+        onClose={() => setShippingAlertOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert
+          onClose={() => setShippingAlertOpen(false)}
+          severity="success"
+          sx={{ width: "100%" }}
         >
-          <h2>Billing Information</h2>
-          <input
-            type="text"
-            name="fullName"
-            value={billingFormData.fullName}
-            onChange={handleBillingChange}
-            placeholder="Full Name"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="email"
-            name="email"
-            value={billingFormData.email}
-            onChange={handleBillingChange}
-            placeholder="Email"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="address"
-            value={billingFormData.address}
-            onChange={handleBillingChange}
-            placeholder="Address"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="city"
-            value={billingFormData.city}
-            onChange={handleBillingChange}
-            placeholder="City"
-            required
-            className="input-field"
-          />
-          <br />
-          <input
-            type="text"
-            name="zipCode"
-            value={billingFormData.zipCode}
-            onChange={handleBillingChange}
-            placeholder="Zip Code"
-            required
-            className="input-field"
-          />
-          <br />
-        </div>
-        <button
-          onClick={(e) => {
-            handleShippingAddressSubmit(e);
-            handleBillingAddressSubmit(e);
-            handleSendDetails(e);
-            proceedtopayment(e);
-          }}
-          className="checkout-button"
-          disabled={!allFieldsFilled}
+          Shipping Address received.
+        </MuiAlert>
+      </Snackbar>
+
+      <Snackbar
+        open={billingAlertOpen}
+        autoHideDuration={6000}
+        onClose={() => setBillingAlertOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert
+          onClose={() => setBillingAlertOpen(false)}
+          severity="success"
+          sx={{ width: "100%" }}
         >
-          Proceed to Payment
-        </button>
-      </form>
+          Billing Address received.
+        </MuiAlert>
+      </Snackbar>
+
+      <Button
+        onClick={(e) => {
+          handleShippingAddressSubmit(e);
+          handleBillingAddressSubmit(e);
+          handleSendDetails(e);
+        }}
+        variant="contained"
+        color="primary"
+        className="checkout-button"
+        disabled={!allFieldsFilled}
+      >
+        Proceed to Payment
+      </Button>
     </div>
   );
 }

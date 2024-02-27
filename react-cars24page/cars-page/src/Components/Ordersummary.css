@@ -6,6 +6,10 @@
   padding: 20px;
   background-color: rgb(255, 255, 255);
 }
+.checkout-back-to-main-button{
+  margin-top: 5px;
+margin-left: -10px;
+}
 
 .orderheading {
   font-size: 18px;

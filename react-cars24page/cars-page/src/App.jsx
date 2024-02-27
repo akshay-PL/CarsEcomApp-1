@@ -13,6 +13,7 @@ import UpdateCredentials from "./Components/Updatecredentials.jsx"; // Import Up
 import Forgotpassword from "./Components/Forgotpassword.jsx";
 import Payment from "./Components/Payment.jsx";
 import Editinformation from "./Components/Editinformation.jsx";
+import Productstore from "./Components/productstore.jsx";
 
 const PrivateRoute = ({ element }) => {
   return element;
@@ -77,8 +78,9 @@ const App = () => {
               <PrivateRoute element={<Ordersummary />} />
             </Layout>
           }
-          path="/ordersummary"
+          path="/ordersummary" // Ensure this path matches
         />
+
         <Route
           element={
             <Layout>
@@ -94,6 +96,14 @@ const App = () => {
             </Layout>
           }
           path="/editinformation"
+        />
+        <Route
+          element={
+            <Layout>
+              <PrivateRoute element={<Productstore />} />
+            </Layout>
+          }
+          path="/productstore"
         />
         <Route // New Route for UpdateCredentials component
           element={

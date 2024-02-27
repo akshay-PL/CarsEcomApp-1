@@ -14,6 +14,8 @@ const userMapRolesRouter = require('./crud/usermaproles.js');
 const userCredentialsRouter = require('./crud/usercredentials.js');
 const ordersRouter = require('./crud/ordersRouter.js');
 const orderItemsRouter = require('./crud/orderItemsRouter.js');
+const bodyParser = require('body-parser');
+
 
 
 app.use((req, res, next) => {
@@ -66,6 +68,9 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(express.json());
+
+app.use(bodyParser.json({ limit: '50mb' })); // Adjust the limit as per your requirement
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 
 
@@ -159,7 +164,6 @@ app.put("/signup/:username", async (req, res) => {
       .request()
       .input("username", sql.VarChar, username)
       .input("email", sql.VarChar, email)
-      .input("password", sql.VarChar, password)
       .input("firstname", sql.VarChar, firstname)
       .input("lastname", sql.VarChar, lastname)
       .input("address", sql.VarChar, address)
@@ -168,7 +172,6 @@ app.put("/signup/:username", async (req, res) => {
       .query(
         `UPDATE Signup 
          SET email = @email,
-             password = @password,
              firstname = @firstname,
              lastname = @lastname,
              address = @address,
@@ -471,6 +474,62 @@ app.post("/ordersummary", async (req, res) => {
   }
 });
 
+
+
+app.get('/shippingaddress', async (req, res) => { // Change from '/shippingaddresses' to '/shippingaddress'
+  try {
+    const result = await sql.query`
+      SELECT *
+      FROM Shipping_address`;
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error fetching all Shipping Addresses:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
+app.get('/productimages', async (req, res) => {
+  try {
+    const result=await sql.query`SELECT * FROM productImage`;
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error fetching product images:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// POST request to create a new product image
+// POST request to create a new product image
+app.post('/productimages', async (req, res) => {
+  const { converted } = req.body;
+  try {
+    const result = await sql.query`
+      INSERT INTO productImage (converted)
+      VALUES (${converted})
+    `;
+    res.status(201).json({ message: 'Product image created successfully' });
+  } catch (error) {
+    console.error('Error creating product image:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+// DELETE request to delete a product image by ID
+app.delete('/productimages/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await sql.query`DELETE FROM productImage WHERE id = ${id}`;
+    res.json({ message: 'Product image deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting product image:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 app.listen(PORT, () => {

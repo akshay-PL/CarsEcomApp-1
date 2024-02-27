@@ -16,7 +16,7 @@
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-.product-container {
+.main-product-container {
   width: 80%;
   margin: auto;
   

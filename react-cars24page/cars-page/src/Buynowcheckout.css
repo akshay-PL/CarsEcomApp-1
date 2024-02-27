@@ -5,6 +5,7 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
+  
 
 .checkout-heading {
     font-size: 28px;
@@ -103,12 +104,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-top: -40px;
-    margin-left: -16px;
+    margin-top: -30px;
+    margin-left: -26px;
 }
 
 .checkout-back-to-main-button:hover {
-    background-color: #d3d3d3;
+    background-color: #ffffff;
 }
 
 .checkout-back-to-main-button:hover span {

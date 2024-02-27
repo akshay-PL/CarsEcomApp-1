@@ -1,0 +1,50 @@
+.product-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .product-input-container {
+    margin-bottom: 10px;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  button {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  .product-image-preview {
+    margin-top: 20px;
+    width: 250px;
+    height: 250px;
+    overflow: hidden;
+    border: 1px solid #ccc; /* Optional: Add a border for visual clarity */
+  }
+  
+  .product-image-preview img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+  

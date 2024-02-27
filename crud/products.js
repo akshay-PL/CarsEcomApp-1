@@ -33,10 +33,10 @@ router.get('/:id', async (req, res) => {
 
 // Create a new car
 router.post('/', async (req, res) => {
-  const { brand, type, model, year, price, stock_quantity, description } = req.body;
+  const { brand, type, model, year, price, stock_quantity, description, productimage } = req.body;
   try {
-    const result = await sql.query`INSERT INTO Cars (brand, type, model, year, price, stock_quantity, description, createdBy) 
-                                      VALUES (${brand}, ${type}, ${model}, ${year}, ${price}, ${stock_quantity}, ${description}, 1)`;
+    const result = await sql.query`INSERT INTO Cars (brand, type, model, year, price, stock_quantity, description, productimage, createdBy) 
+                                      VALUES (${brand}, ${type}, ${model}, ${year}, ${price}, ${stock_quantity}, ${description}, ${productimage}, 1)`;
     res.status(201).json({ message: 'Car created successfully' });
   } catch (error) {
     console.error('Error creating car:', error);
@@ -44,14 +44,16 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+
 // Update a car by ID
 router.put('/:id', async (req, res) => {
   const carId = req.params.id;
-  const { brand, type, model, year, price, stock_quantity, description } = req.body;
+  const { brand, type, model, year, price, stock_quantity, description,productimage } = req.body;
   try {
     const result = await sql.query`UPDATE Cars 
                                       SET brand=${brand}, type=${type}, model=${model}, year=${year}, price=${price}, 
-                                          stock_quantity=${stock_quantity}, description=${description}, updatedAt = GETDATE(), updatedBy = 1 
+                                          stock_quantity=${stock_quantity}, description=${description},productimage=${productimage} updatedAt = GETDATE(), updatedBy = 1 
                                       WHERE id = ${carId} AND isDeleted = 0`;
     res.json({ message: 'Car updated successfully' });
   } catch (error) {

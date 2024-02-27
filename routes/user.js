@@ -1009,6 +1009,8 @@
  *                 type: integer
  *               description:
  *                 type: string
+ *               productimage:
+ *                 type:string
  *     responses:
  *       201:
  *         description: Car created successfully
@@ -1127,8 +1129,6 @@
  *             error:
  *               type: string
  */
-
-
 
 
 
@@ -1860,9 +1860,6 @@
  *               email:
  *                 type: string
  *                 description: The updated email of the user.
- *               password:
- *                 type: string
- *                 description: The updated password of the user.
  *               firstname:
  *                 type: string
  *                 description: The updated firstname of the user.
@@ -2459,4 +2456,134 @@
  *         description: Order created successfully
  *       500:
  *         description: Internal Server Error
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @swagger
+ * /productimages:
+ *   get:
+ *     tags:
+ *       - Product Image
+ *     summary: Get all product images
+ *     description: Retrieve all product images stored in the database.
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   converted:
+ *                     type: string
+ */
+
+
+/**
+ * @swagger
+ * /productimages:
+ *   post:
+ *     tags:
+ *       - Product Image
+ *     summary: Create a new product image
+ *     description: Create a new product image in the database.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               converted:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Product image created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+
+/**
+ * @swagger
+ * /productimages/{id}:
+ *   delete:
+ *     tags:
+ *       - Product Image
+ *     summary: Delete a product image by ID
+ *     description: Delete a product image from the database by its ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the product image to delete
+ *     responses:
+ *       200:
+ *         description: Product image deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Product image not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
