@@ -44,7 +44,7 @@ html {
 
 .details-info-box {
     flex: 1;
-    max-width: 600px;
+    width: 750px;
     display: flex;
     flex-direction: column;
     border: 2px solid #ccc;
@@ -84,7 +84,12 @@ html {
     color: #666;
     font-size: 20px;
     line-height: 1.6;
+    width: 100%; /* Set the width to 100% to fill the available space */
+    height: 200px; /* Set the height to your desired value */
+    overflow: auto; /* Add scrollbar if content exceeds the specified height */
 }
+
+
 
 .details-actions {
     margin-top: 20px;
@@ -133,6 +138,7 @@ html {
     transition: background-color 0.3s ease;
     margin: 0 auto;
     display: block;
+    width: 250px;
 }
 
 .buy-now-button:hover {

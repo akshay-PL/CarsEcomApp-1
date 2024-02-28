@@ -9,6 +9,8 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 import "./Buynowcheckout.css";
 import withAuth from "./Components/PrivateRoute";
 
@@ -219,170 +221,187 @@ function CheckoutPage() {
       <Typography variant="h5" className="checkout-heading" gutterBottom>
         Checkout
       </Typography>
-      {/* Displaying Product Details */}
-      {carDetails && (
-        <div className="product-details">
-          <Typography variant="h6" gutterBottom>
-            Product Details
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Brand: {carDetails.brand}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Model: {carDetails.model}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Year: {carDetails.year}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Price: {carDetails.price}
-          </Typography>
-          {/* Add more details as needed */}
-          {carImage && (
-            <img src={carImage} alt="Product" className="product-image" />
-          )}
-        </div>
-      )}
-
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <div className="shipping-info">
-            <Typography variant="h6" gutterBottom>
-              Shipping Information
-            </Typography>
-            <TextField
-              type="text"
-              name="fullName"
-              value={shippingFormData.fullName}
-              onChange={handleShippingChange}
-              label="Full Name"
-              required
-              error={checkboxClicked && shippingFormData.fullName === ""}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              type="email"
-              name="email"
-              value={shippingFormData.email}
-              onChange={handleShippingChange}
-              label="Email"
-              required
-              error={checkboxClicked && shippingFormData.email === ""}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              type="text"
-              name="address"
-              value={shippingFormData.address}
-              onChange={handleShippingChange}
-              label="Address"
-              required
-              error={checkboxClicked && shippingFormData.address === ""}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              type="text"
-              name="city"
-              value={shippingFormData.city}
-              onChange={handleShippingChange}
-              label="City"
-              required
-              error={checkboxClicked && shippingFormData.city === ""}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              type="text"
-              name="zipCode"
-              value={shippingFormData.zipCode}
-              onChange={handleShippingChange}
-              label="Zip Code"
-              required
-              error={checkboxClicked && shippingFormData.zipCode === ""}
-              fullWidth
-              margin="normal"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={shippingFormData.is_shipping_add_same}
-                  onChange={handleCheckboxChange}
-                  name="is_shipping_add_same"
-                />
-              }
-              label="Same as billing address"
-            />
-          </div>
+          {/* Displaying Product Details */}
+          {carDetails && (
+            <Card sx={{ display: "flex", marginBottom: "20px" }}>
+              <CardMedia
+                component="img"
+                image={carImage}
+                alt="Car Image"
+                sx={{ width: 200, objectFit: "contain", marginRight: "20px" }}
+              />
+              <div
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  padding: "16px",
+                }}
+              >
+                <Typography variant="h6" gutterBottom>
+                  Product Details
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Brand: {carDetails.brand}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Model: {carDetails.model}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Year: {carDetails.year}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Price: {carDetails.price}
+                </Typography>
+              </div>
+            </Card>
+          )}
         </Grid>
-        {!hideBillingInfo && (
-          <Grid item xs={12} sm={6}>
-            <div className="billing-info">
-              <Typography variant="h6" gutterBottom>
-                Billing Information
-              </Typography>
-              <TextField
-                type="text"
-                name="fullName"
-                value={billingFormData.fullName}
-                onChange={handleBillingChange}
-                label="Full Name"
-                required
-                error={checkboxClicked && billingFormData.fullName === ""}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                type="email"
-                name="email"
-                value={billingFormData.email}
-                onChange={handleBillingChange}
-                label="Email"
-                required
-                error={checkboxClicked && billingFormData.email === ""}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                type="text"
-                name="address"
-                value={billingFormData.address}
-                onChange={handleBillingChange}
-                label="Address"
-                required
-                error={checkboxClicked && billingFormData.address === ""}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                type="text"
-                name="city"
-                value={billingFormData.city}
-                onChange={handleBillingChange}
-                label="City"
-                required
-                error={checkboxClicked && billingFormData.city === ""}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                type="text"
-                name="zipCode"
-                value={billingFormData.zipCode}
-                onChange={handleBillingChange}
-                label="Zip Code"
-                required
-                error={checkboxClicked && billingFormData.zipCode === ""}
-                fullWidth
-                margin="normal"
-              />
-            </div>
-          </Grid>
-        )}
-      </Grid>
+        <Grid item xs={12} sm={6}>
+          {/* Shipping and Billing Information */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <div className="shipping-info">
+                <Typography variant="h6" gutterBottom>
+                  Shipping Information
+                </Typography>
+                <TextField
+                  type="text"
+                  name="fullName"
+                  value={shippingFormData.fullName}
+                  onChange={handleShippingChange}
+                  label="Full Name"
+                  required
+                  error={checkboxClicked && shippingFormData.fullName === ""}
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  type="email"
+                  name="email"
+                  value={shippingFormData.email}
+                  onChange={handleShippingChange}
+                  label="Email"
+                  required
+                  error={checkboxClicked && shippingFormData.email === ""}
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  type="text"
+                  name="address"
+                  value={shippingFormData.address}
+                  onChange={handleShippingChange}
+                  label="Address"
+                  required
+                  error={checkboxClicked && shippingFormData.address === ""}
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  type="text"
+                  name="city"
+                  value={shippingFormData.city}
+                  onChange={handleShippingChange}
+                  label="City"
+                  required
+                  error={checkboxClicked && shippingFormData.city === ""}
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  type="text"
+                  name="zipCode"
+                  value={shippingFormData.zipCode}
+                  onChange={handleShippingChange}
+                  label="Zip Code"
+                  required
+                  error={checkboxClicked && shippingFormData.zipCode === ""}
+                  fullWidth
+                  margin="normal"
+                />
 
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={shippingFormData.is_shipping_add_same}
+                      onChange={handleCheckboxChange}
+                      name="is_shipping_add_same"
+                    />
+                  }
+                  label="Same as billing address"
+                />
+              </div>
+            </Grid>
+            {!hideBillingInfo && (
+              <Grid item xs={12} sm={6}>
+                <div className="billing-info">
+                  <Typography variant="h6" gutterBottom>
+                    Billing Information
+                  </Typography>
+                  <TextField
+                    type="text"
+                    name="fullName"
+                    value={billingFormData.fullName}
+                    onChange={handleBillingChange}
+                    label="Full Name"
+                    required
+                    error={checkboxClicked && billingFormData.fullName === ""}
+                    fullWidth
+                    margin="normal"
+                  />
+                  <TextField
+                    type="email"
+                    name="email"
+                    value={billingFormData.email}
+                    onChange={handleBillingChange}
+                    label="Email"
+                    required
+                    error={checkboxClicked && billingFormData.email === ""}
+                    fullWidth
+                    margin="normal"
+                  />
+                  <TextField
+                    type="text"
+                    name="address"
+                    value={billingFormData.address}
+                    onChange={handleBillingChange}
+                    label="Address"
+                    required
+                    error={checkboxClicked && billingFormData.address === ""}
+                    fullWidth
+                    margin="normal"
+                  />
+                  <TextField
+                    type="text"
+                    name="city"
+                    value={billingFormData.city}
+                    onChange={handleBillingChange}
+                    label="City"
+                    required
+                    error={checkboxClicked && billingFormData.city === ""}
+                    fullWidth
+                    margin="normal"
+                  />
+                  <TextField
+                    type="text"
+                    name="zipCode"
+                    value={billingFormData.zipCode}
+                    onChange={handleBillingChange}
+                    label="Zip Code"
+                    required
+                    error={checkboxClicked && billingFormData.zipCode === ""}
+                    fullWidth
+                    margin="normal"
+                  />
+                </div>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
       <Snackbar
         open={shippingAlertOpen}
         autoHideDuration={6000}
@@ -397,7 +416,6 @@ function CheckoutPage() {
           Shipping Address received.
         </MuiAlert>
       </Snackbar>
-
       <Snackbar
         open={billingAlertOpen}
         autoHideDuration={6000}
@@ -412,7 +430,6 @@ function CheckoutPage() {
           Billing Address received.
         </MuiAlert>
       </Snackbar>
-
       <Button
         onClick={(e) => {
           handleShippingAddressSubmit(e);

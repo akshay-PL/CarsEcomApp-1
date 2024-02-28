@@ -1039,7 +1039,7 @@
  *     tags:
  *       - Vehicle
  *     summary: Update a car by ID
- *     description: Update car details like brand,type, model, year, price, and stock quantity.
+ *     description: Update car details like brand, type, model, year, price, stock quantity, and product image.
  *     parameters:
  *       - in: path
  *         name: id
@@ -1069,6 +1069,8 @@
  *                 type: integer
  *               description:
  *                 type: string
+ *               productimage:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Car updated successfully
@@ -1089,6 +1091,7 @@
  *             example:
  *               error: Internal Server Error
  */
+
 
 /**
  * @swagger

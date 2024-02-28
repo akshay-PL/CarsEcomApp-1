@@ -14,9 +14,17 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
+  const [userRole, setUserRole] = useState("");
 
   const dropdownRef = useRef(null);
   const drawerRef = useRef(null);
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user) {
+      setUserRole(user.role);
+    }
+  }, []);
 
   const handleNavigation = (route) => {
     navigate(route);
@@ -27,7 +35,8 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
     navigate("/");
   };
 
@@ -60,7 +69,7 @@ const Navbar = () => {
   };
 
   const navigateToUpdateCredentials = () => {
-    navigate("/update-credentials"); // Assuming this is your route for UpdateCredentials component
+    navigate("/update-credentials");
   };
 
   return (
@@ -74,24 +83,36 @@ const Navbar = () => {
         <div className="heading">CarsEcom</div>
       </div>
       <div className="nav-links">
-        <div
-          className="nav-link"
-          onClick={() => handleNavigation("/productstore")}
-        >
-          Add product
-        </div>
-        <div className="nav-link" onClick={() => handleNavigation("/about")}>
-          About Us
-        </div>
-        <div className="nav-link" onClick={() => handleNavigation("/contact")}>
-          Contact
-        </div>
-        <div
-          className="nav-link"
-          onClick={() => handleNavigation("/ordersummary")}
-        >
-          Orders
-        </div>
+        {userRole === "admin" && (
+          <div
+            className="nav-link"
+            onClick={() => handleNavigation("/productstore")}
+          >
+            Add product
+          </div>
+        )}
+        {userRole !== "admin" && (
+          <>
+            <div
+              className="nav-link"
+              onClick={() => handleNavigation("/about")}
+            >
+              About Us
+            </div>
+            <div
+              className="nav-link"
+              onClick={() => handleNavigation("/contact")}
+            >
+              Contact
+            </div>
+            <div
+              className="nav-link"
+              onClick={() => handleNavigation("/ordersummary")}
+            >
+              Orders
+            </div>
+          </>
+        )}
         <div
           className="nav-link logout-link"
           ref={dropdownRef}
@@ -116,9 +137,9 @@ const Navbar = () => {
         ref={drawerRef}
         anchor="right"
         open={openProfile}
-        onClose={() => setOpenProfile(false)} // Close the drawer on close event
+        onClose={() => setOpenProfile(false)}
         className="custom-drawer"
-        PaperProps={{ style: { width: "50vw" } }} // Set the width of the Paper component inside Drawer
+        PaperProps={{ style: { width: "50vw" } }}
       >
         <div className="drawer-content">
           <Editinformation />

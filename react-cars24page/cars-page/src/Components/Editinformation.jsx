@@ -5,10 +5,16 @@ import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box"; // Import Box component for displaying error message
+import Snackbar from "@mui/material/Snackbar";
+import SnackbarContent from "@mui/material/SnackbarContent";
+
 import withAuth from "./PrivateRoute";
 import "./Editinformation.css";
 
 const Editinformation = () => {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
   const [userData, setUserData] = useState(null);
   const [editedData, setEditedData] = useState({
     email: "",
@@ -104,11 +110,16 @@ const Editinformation = () => {
         );
         const data = await response.json();
         console.log(data);
+        setSnackbarMessage("Changes saved successfully.");
+        setSnackbarOpen(true);
       } catch (error) {
         console.error("Error updating data:", error);
+        setSnackbarMessage("Failed to save changes.");
+        setSnackbarOpen(true);
       }
     } else {
-      // User clicked cancel, do nothing or show a message
+      setSnackbarMessage("Changes discarded.");
+      setSnackbarOpen(true);
     }
   };
 
@@ -308,6 +319,27 @@ const Editinformation = () => {
       <Button variant="text" color="primary" onClick={handleSave}>
         Update and Save
       </Button>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <SnackbarContent
+          style={{
+            backgroundColor:
+              snackbarMessage === "Changes saved successfully."
+                ? "green"
+                : snackbarMessage === "Failed to save changes."
+                ? "red"
+                : "orange",
+          }}
+          message={snackbarMessage}
+        />
+      </Snackbar>
     </div>
   );
 };

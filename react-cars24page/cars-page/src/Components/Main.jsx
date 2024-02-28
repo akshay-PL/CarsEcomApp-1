@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import axiosInstance from "./Axiosinterceptor.jsx"; // Import axiosInstance here
 import { useNavigate } from "react-router-dom";
 import "./Main.css";
 import withAuth from "./PrivateRoute";
@@ -9,6 +10,7 @@ const Main = ({ test }) => {
   const [cars, setCars] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const navigate = useNavigate();
+  const user = JSON.parse(sessionStorage.getItem("user")); // Get user from session storage
 
   // Fetching data from API
   useEffect(() => {
@@ -26,16 +28,49 @@ const Main = ({ test }) => {
 
   // Function to handle click event for viewing car details
   const handleSeeDetails = (car) => {
-    navigate(`/main/details/${car.id}`, { state: { image: car.productimage } });
+    if (user.role !== "admin") {
+      navigate(`/main/details/${car.id}`, {
+        state: { image: car.productimage },
+      });
+    }
   };
 
   // Function to handle click event for buying a car
-  // Assuming you have a function for navigating to the Buynowcheckout page
   const handleBuyClick = (event, car) => {
     event.stopPropagation();
     navigate(`/buynowcheckout/${car.id}`, {
       state: { image: car.productimage },
     });
+  };
+
+  // Function to handle click event for editing a car (for admin)
+  const handleEditClick = (event, car) => {
+    event.stopPropagation();
+    navigate(`/editproduct/${car.id}`); // Navigate to the editproduct page with car id
+  };
+
+  // Function to handle click event for deleting a car (for admin)
+  const handleDeleteClick = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (confirmDelete) {
+      try {
+        const response = await axiosInstance.delete(
+          `http://localhost:3000/cars/${id}`
+        );
+        if (response.status === 200) {
+          alert("Item deleted successfully!");
+          // Remove the deleted item from the list
+          setCars(cars.filter((item) => item.id !== id));
+        } else {
+          alert("Failed to delete item.");
+        }
+      } catch (error) {
+        console.error("Error during delete:", error);
+        alert("An error occurred while deleting item.");
+      }
+    }
   };
 
   // Function to handle search term change
@@ -95,9 +130,21 @@ const Main = ({ test }) => {
                   <span className="value">{car.price}</span>
                 </p>
               </div>
-              <button onClick={(event) => handleBuyClick(event, car)}>
-                Buy Now
-              </button>
+              {/* Conditional rendering for buttons based on role */}
+              {user && user.role === "admin" ? (
+                <div>
+                  <button onClick={(event) => handleEditClick(event, car)}>
+                    Edit
+                  </button>
+                  <button onClick={() => handleDeleteClick(car.id)}>
+                    Delete
+                  </button>
+                </div>
+              ) : (
+                <button onClick={(event) => handleBuyClick(event, car)}>
+                  Buy Now
+                </button>
+              )}
             </div>
           </div>
         ))}

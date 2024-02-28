@@ -44,6 +44,7 @@ const LoginSignup = () => {
         let user = {
           userName: response.data.user.username,
           email: response.data.user.email,
+          role: response.data.user.role,
         };
         sessionStorage.setItem("user", JSON.stringify(user));
 

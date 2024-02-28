@@ -14,6 +14,7 @@ import Forgotpassword from "./Components/Forgotpassword.jsx";
 import Payment from "./Components/Payment.jsx";
 import Editinformation from "./Components/Editinformation.jsx";
 import Productstore from "./Components/productstore.jsx";
+import Editproduct from "./Components/Editproduct.jsx";
 
 const PrivateRoute = ({ element }) => {
   return element;
@@ -105,6 +106,15 @@ const App = () => {
           }
           path="/productstore"
         />
+        <Route
+          element={
+            <Layout>
+              <PrivateRoute element={<Editproduct />} />
+            </Layout>
+          }
+          path="/editproduct/:id" // Add a dynamic parameter ':id' to capture the car ID
+        />
+
         <Route // New Route for UpdateCredentials component
           element={
             <Layout>
