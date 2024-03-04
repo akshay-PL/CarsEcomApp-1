@@ -97,15 +97,15 @@ app.get("/signup", async (req, res) => {
 });
 
 
-app.get("/signup/:username", async (req, res) => {
-  const username = req.params.username;
+app.get("/signup/:email", async (req, res) => {
+  const email = req.params.email;
 
   try {
     const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
-      .input("username", sql.VarChar, username)
-      .query('SELECT * FROM Signup WHERE username = @username');
+      .input("email", sql.VarChar, email)
+      .query('SELECT * FROM Signup WHERE email = @email');
 
     if (result.recordset.length > 0) {
       res.status(200).json(result.recordset[0]); // Assuming username is unique
@@ -154,16 +154,17 @@ app.post("/signup", async (req, res) => {
 });
 
 
-app.put("/signup/:username", async (req, res) => {
-  const username = req.params.username;
-  const { email, password, firstname, lastname, address, date_of_birth, contact } = req.body;
+app.put("/signup/:email", async (req, res) => {
+  const email = req.params.email;
+  const { username, password, firstname, lastname, address, date_of_birth, contact } = req.body;
   
   try {
     const pool = await sql.connect(dbConfig);
     const result = await pool
       .request()
-      .input("username", sql.VarChar, username)
       .input("email", sql.VarChar, email)
+      .input("username", sql.VarChar, username)
+      .input("password", sql.VarChar, password)
       .input("firstname", sql.VarChar, firstname)
       .input("lastname", sql.VarChar, lastname)
       .input("address", sql.VarChar, address)
@@ -171,13 +172,14 @@ app.put("/signup/:username", async (req, res) => {
       .input("contact", sql.VarChar, contact)
       .query(
         `UPDATE Signup 
-         SET email = @email,
+         SET username = @username,
+             password = @password,
              firstname = @firstname,
              lastname = @lastname,
              address = @address,
              date_of_birth = @date_of_birth,
              contact = @contact
-         WHERE username = @username` // Update based on username
+         WHERE email = @email` // Update based on email
       );
 
     if (result.rowsAffected[0] > 0) {
@@ -194,6 +196,7 @@ app.put("/signup/:username", async (req, res) => {
       .json({ error: "Something went wrong during the update process" });
   }
 });
+
 
 
 app.patch("/forgotpassword/:email", async (req, res) => {
@@ -432,12 +435,29 @@ app.get("/ordersummary", async (req, res) => {
 });
 
 
+app.get("/ordersummary/:usermail", async (req, res) => {
+  const { usermail } = req.params; // Extracting usermail from route parameters
+  if (!usermail) {
+    return res.status(400).json({ error: 'Missing usermail parameter' });
+  }
+
+  try {
+    const result = await sql.query`SELECT * FROM Order_summary WHERE usermail = ${usermail}`;
+    res.json(result.recordset);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
 
 
 app.post("/ordersummary", async (req, res) => {
   const {
-    user_username,
-    user_email,
+    usermail,
     product_brand,
     product_type,
     product_model,
@@ -457,12 +477,12 @@ app.post("/ordersummary", async (req, res) => {
   try {
     const result = await sql.query`
       INSERT INTO Order_summary (
-        user_username, user_email, product_brand, product_type, product_model, product_price,
+        usermail,product_brand, product_type, product_model, product_price,
         ship_fullName, ship_email, ship_address, ship_city, ship_zipCode,
         bill_fullName, bill_email, bill_address, bill_city, bill_zipCode
       ) 
       VALUES (
-        ${user_username}, ${user_email}, ${product_brand}, ${product_type}, ${product_model}, ${product_price},
+        ${usermail},${product_brand}, ${product_type}, ${product_model}, ${product_price},
         ${ship_fullName}, ${ship_email}, ${ship_address}, ${ship_city}, ${ship_zipCode},
         ${bill_fullName}, ${bill_email}, ${bill_address}, ${bill_city}, ${bill_zipCode}
       )`;

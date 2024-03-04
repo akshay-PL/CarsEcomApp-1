@@ -53,7 +53,7 @@ router.put('/:id', async (req, res) => {
   try {
     const result = await sql.query`UPDATE Cars 
                                       SET brand=${brand}, type=${type}, model=${model}, year=${year}, price=${price}, 
-                                          stock_quantity=${stock_quantity}, description=${description},productimage=${productimage} updatedAt = GETDATE(), updatedBy = 1 
+                                          stock_quantity=${stock_quantity}, description=${description},productimage=${productimage},updatedAt = GETDATE(), updatedBy = 1 
                                       WHERE id = ${carId} AND isDeleted = 0`;
     res.json({ message: 'Car updated successfully' });
   } catch (error) {

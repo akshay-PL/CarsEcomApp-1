@@ -60,13 +60,6 @@ const LoginSignup = () => {
 
   const handleSignup = async () => {
     try {
-      let roleToSend = role; // Initialize roleToSend with the value from the input field
-
-      // Check if the entered role is "systemadmin" and set roleToSend to "admin"
-      if (role === "systemadmin") {
-        roleToSend = "admin";
-      }
-
       const response = await axiosInstance.post(
         "http://localhost:3000/signup",
         {
@@ -78,7 +71,7 @@ const LoginSignup = () => {
           address,
           date_of_birth: dateOfBirth,
           contact,
-          role: roleToSend, // Use roleToSend instead of the original role
+          role,
         }
       );
 
@@ -87,7 +80,6 @@ const LoginSignup = () => {
       if (response.status === 201) {
         console.log("Signup successful");
         alert("User registered successfully!");
-        // Optionally, you can automatically log in the user after signup
         await handleLogin();
       } else {
         setErrorMessage("Signup failed. Please try again.");
@@ -123,7 +115,7 @@ const LoginSignup = () => {
   const handleToggleAction = () => {
     setAction(action === "Login" ? "Sign up" : "Login");
     resetFields();
-    setErrorMessage(""); // Reset error message when switching between login and signup
+    setErrorMessage("");
   };
 
   return (
@@ -166,7 +158,6 @@ const LoginSignup = () => {
             />
           </div>
 
-          {/* Additional fields for signup */}
           {action === "Sign up" && (
             <>
               <div className="input">
@@ -210,12 +201,15 @@ const LoginSignup = () => {
                 />
               </div>
               <div className="input">
-                <input
-                  type="text"
-                  placeholder="Role"
+                <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                />
+                  placeholder="Role"
+                >
+                  <option value="">Select Role</option>
+                  <option value="admin">Admin</option>
+                  <option value="customer">Customer</option>
+                </select>
               </div>
             </>
           )}

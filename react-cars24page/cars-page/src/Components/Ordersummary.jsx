@@ -6,7 +6,7 @@ import axios from "axios";
 import "./Ordersummary.css"; // Import CSS file
 
 const Ordersummary = () => {
-  const [orderData, setOrderData] = useState(null);
+  const [orderData, setOrderData] = useState([]);
   const [showAllEntries, setShowAllEntries] = useState(false);
   const navigate = useNavigate();
 
@@ -14,33 +14,26 @@ const Ordersummary = () => {
     const fetchOrderSummary = async () => {
       try {
         const userData = JSON.parse(sessionStorage.getItem("user"));
-        if (!userData || !userData.userName || !userData.email) {
+        if (!userData || !userData.email) {
           return;
         }
 
-        const response = await axios.get("http://localhost:3000/ordersummary", {
-          params: {
-            username: userData.userName,
-            email: userData.email,
-          },
-        });
+        const response = await axios.get(
+          `http://localhost:3000/ordersummary/${userData.email}` // Update URL to include user's email
+        );
 
         const sortedOrders = response.data.sort((a, b) => {
           return new Date(b.createdAt) - new Date(a.createdAt);
         });
 
-        if (showAllEntries) {
-          setOrderData(sortedOrders);
-        } else {
-          setOrderData([sortedOrders[0]]);
-        }
+        setOrderData(sortedOrders);
       } catch (error) {
         console.error("Error fetching order summary:", error);
       }
     };
 
     fetchOrderSummary();
-  }, [showAllEntries]);
+  }, []);
 
   const handleToggleChange = () => {
     setShowAllEntries(!showAllEntries);
@@ -66,7 +59,9 @@ const Ordersummary = () => {
           Show all entries
         </label>
       </div>
-      {orderData && (
+      {orderData.length === 0 ? (
+        <p>CART IS EMPTY</p>
+      ) : (
         <div>
           {orderData.map((order, index) => (
             <div className="order-box" key={index}>

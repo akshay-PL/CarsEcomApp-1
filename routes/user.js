@@ -1057,20 +1057,28 @@
  *             properties:
  *               brand:
  *                 type: string
+ *                 description: The brand of the car
  *               type:
  *                 type: string
+ *                 description: The type of the car
  *               model:
  *                 type: string
+ *                 description: The model of the car
  *               year:
  *                 type: integer
+ *                 description: The manufacturing year of the car
  *               price:
  *                 type: number
+ *                 description: The price of the car
  *               stock_quantity:
  *                 type: integer
+ *                 description: The stock quantity of the car
  *               description:
  *                 type: string
+ *                 description: Description of the car
  *               productimage:
  *                 type: string
+ *                 description: URL of the product image
  *     responses:
  *       200:
  *         description: Car updated successfully
@@ -1078,6 +1086,13 @@
  *           application/json:
  *             example:
  *               message: Car updated successfully
+ *       400:
+ *         description: Bad request, invalid data provided
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Bad Request
+ *               message: Invalid data provided
  *       404:
  *         description: Car not found
  *         content:
@@ -1696,7 +1711,7 @@
 
 /**
  * @swagger
- * /signup/{username}:
+ * /signup/{email}:
  *   get:
  *     tags:
  *       - Authentication
@@ -1837,20 +1852,19 @@
 
 
 
-
 /**
  * @swagger
- * /signup/{username}:
+ * /signup/{email}:
  *   put:
  *     tags:
  *       - Authentication
  *     summary: Update User Information
- *     description: Update user information including username, email, password, firstname, lastname, address, date_of_birth, and contact.
+ *     description: Update user information including email, password, firstname, lastname, address, date_of_birth, and contact based on the email.
  *     parameters:
  *       - in: path
- *         name: username
+ *         name: email
  *         required: true
- *         description: The username of the user.
+ *         description: The email of the user.
  *         schema:
  *           type: string
  *     requestBody:
@@ -1860,9 +1874,12 @@
  *           schema:
  *             type: object
  *             properties:
- *               email:
+ *               username:
  *                 type: string
- *                 description: The updated email of the user.
+ *                 description: The updated username of the user.
+ *               password:
+ *                 type: string
+ *                 description: The updated password of the user.
  *               firstname:
  *                 type: string
  *                 description: The updated firstname of the user.
@@ -1899,9 +1916,9 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   description: Email or password missing.
+ *                   description: Username, password, firstname, lastname, address, date_of_birth, or contact missing.
  *             example:
- *               error: "Email or password missing"
+ *               error: "Username, password, firstname, lastname, address, date_of_birth, or contact missing"
  *       404:
  *         description: User not found
  *         content:
@@ -2367,12 +2384,6 @@
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
- *                     type: integer
- *                   user_username:
- *                     type: string
- *                   user_email:
- *                     type: string
  *                   product_brand:
  *                     type: string
  *                   product_type:
@@ -2411,7 +2422,68 @@
 
 /**
  * @swagger
- * /orders:
+ * /ordersummary/{usermail}:
+ *   get:
+ *     summary: Get all orders or orders by usermail
+ *     description: Endpoint to fetch all orders or orders for a specific user based on usermail
+ *     parameters:
+ *       - in: path
+ *         name: usermail
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Email address of the user to filter orders
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   product_brand:
+ *                     type: string
+ *                   product_type:
+ *                     type: string
+ *                   product_model:
+ *                     type: string
+ *                   product_price:
+ *                     type: string
+ *                   ship_fullName:
+ *                     type: string
+ *                   ship_email:
+ *                     type: string
+ *                   ship_address:
+ *                     type: string
+ *                   ship_city:
+ *                     type: string
+ *                   ship_zipCode:
+ *                     type: string
+ *                   bill_fullName:
+ *                     type: string
+ *                   bill_email:
+ *                     type: string
+ *                   bill_address:
+ *                     type: string
+ *                   bill_city:
+ *                     type: string
+ *                   bill_zipCode:
+ *                     type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *       500:
+ *         description: Internal Server Error
+ */
+
+
+
+
+/**
+ * @swagger
+ * /ordersummary:
  *   post:
  *     summary: Create a new order
  *     description: Endpoint to create a new order
@@ -2422,9 +2494,7 @@
  *           schema:
  *             type: object
  *             properties:
- *               user_username:
- *                 type: string
- *               user_email:
+ *               usermail:
  *                 type: string
  *               product_brand:
  *                 type: string

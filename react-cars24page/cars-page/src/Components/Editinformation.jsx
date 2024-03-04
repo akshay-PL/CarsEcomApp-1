@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box"; // Import Box component for displaying error message
+import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import SnackbarContent from "@mui/material/SnackbarContent";
 
@@ -17,7 +17,7 @@ const Editinformation = () => {
 
   const [userData, setUserData] = useState(null);
   const [editedData, setEditedData] = useState({
-    email: "",
+    username: "",
     firstname: "",
     lastname: "",
     address: "",
@@ -25,27 +25,25 @@ const Editinformation = () => {
     contact: "",
   });
   const [editableFields, setEditableFields] = useState({
-    email: false,
+    username: false,
     firstname: false,
     lastname: false,
     address: false,
     date_of_birth: false,
     contact: false,
   });
-  const [formError, setFormError] = useState(false); // State to manage form error
+  const [formError, setFormError] = useState(false);
 
   useEffect(() => {
     const userString = sessionStorage.getItem("user");
     if (!userString) return;
 
     const user = JSON.parse(userString);
-    const { userName } = user;
+    const { email } = user;
 
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/signup/${userName}`
-        );
+        const response = await fetch(`http://localhost:3000/signup/${email}`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -58,7 +56,7 @@ const Editinformation = () => {
         setUserData(data);
         setEditedData((prevData) => ({
           ...prevData,
-          email: data.email,
+          username: data.username,
           firstname: data.firstname,
           lastname: data.lastname,
           address: data.address,
@@ -82,7 +80,6 @@ const Editinformation = () => {
   };
 
   const handleSave = async () => {
-    // Check if any field is empty
     for (const key in editedData) {
       if (editedData[key].trim() === "") {
         setFormError(true);
@@ -96,18 +93,15 @@ const Editinformation = () => {
         const userString = sessionStorage.getItem("user");
         if (!userString) return;
 
-        const { userName } = JSON.parse(userString);
+        const { email } = JSON.parse(userString);
 
-        const response = await fetch(
-          `http://localhost:3000/signup/${userName}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(editedData),
-          }
-        );
+        const response = await fetch(`http://localhost:3000/signup/${email}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editedData),
+        });
         const data = await response.json();
         console.log(data);
         setSnackbarMessage("Changes saved successfully.");
@@ -126,7 +120,7 @@ const Editinformation = () => {
   const handleEditField = (fieldName) => {
     setEditableFields((prevEditableFields) => ({
       ...prevEditableFields,
-      [fieldName]: !prevEditableFields[fieldName], // Toggle the value
+      [fieldName]: !prevEditableFields[fieldName],
     }));
   };
 
@@ -141,20 +135,20 @@ const Editinformation = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                label="Email"
+                label="Username"
                 type="text"
-                name="email"
-                value={editedData.email}
+                name="username"
+                value={editedData.username}
                 onChange={handleChange}
                 fullWidth
-                disabled={!editableFields.email}
+                disabled={!editableFields.username}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <Button
                         variant="text"
                         color="primary"
-                        onClick={() => handleEditField("email")}
+                        onClick={() => handleEditField("username")}
                       >
                         Edit
                       </Button>
@@ -172,7 +166,7 @@ const Editinformation = () => {
                 onChange={handleChange}
                 fullWidth
                 disabled={!editableFields.firstname}
-                error={formError && !editedData.firstname.trim()} // Apply error state to the TextField
+                error={formError && !editedData.firstname.trim()}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -202,7 +196,7 @@ const Editinformation = () => {
                 onChange={handleChange}
                 fullWidth
                 disabled={!editableFields.lastname}
-                error={formError && !editedData.lastname.trim()} // Apply error state to the TextField
+                error={formError && !editedData.lastname.trim()}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -232,7 +226,7 @@ const Editinformation = () => {
                 onChange={handleChange}
                 fullWidth
                 disabled={!editableFields.address}
-                error={formError && !editedData.address.trim()} // Apply error state to the TextField
+                error={formError && !editedData.address.trim()}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -262,7 +256,7 @@ const Editinformation = () => {
                 onChange={handleChange}
                 fullWidth
                 disabled={!editableFields.date_of_birth}
-                error={formError && !editedData.date_of_birth.trim()} // Apply error state to the TextField
+                error={formError && !editedData.date_of_birth.trim()}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -292,7 +286,7 @@ const Editinformation = () => {
                 onChange={handleChange}
                 fullWidth
                 disabled={!editableFields.contact}
-                error={formError && !editedData.contact.trim()} // Apply error state to the TextField
+                error={formError && !editedData.contact.trim()}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">

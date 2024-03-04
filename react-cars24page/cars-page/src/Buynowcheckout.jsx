@@ -125,11 +125,10 @@ function CheckoutPage() {
     e.preventDefault();
 
     const userData = JSON.parse(sessionStorage.getItem("user"));
-    const { userName, email } = userData;
+    const { email } = userData;
 
     const orderData = {
-      user_username: userName,
-      user_email: email,
+      usermail: email,
       product_brand: carDetails.brand,
       product_type: carDetails.type,
       product_model: carDetails.model,
@@ -230,7 +229,7 @@ function CheckoutPage() {
                 component="img"
                 image={carImage}
                 alt="Car Image"
-                sx={{ width: 200, objectFit: "contain", marginRight: "20px" }}
+                sx={{ width: 300, objectFit: "contain", marginRight: "20px" }}
               />
               <div
                 sx={{
@@ -277,7 +276,13 @@ function CheckoutPage() {
                   error={checkboxClicked && shippingFormData.fullName === ""}
                   fullWidth
                   margin="normal"
+                  sx={{
+                    width: shippingFormData.is_shipping_add_same ? 700 : "100%",
+                    objectFit: "contain",
+                    marginRight: "20px",
+                  }}
                 />
+
                 <TextField
                   type="email"
                   name="email"
@@ -288,7 +293,13 @@ function CheckoutPage() {
                   error={checkboxClicked && shippingFormData.email === ""}
                   fullWidth
                   margin="normal"
+                  sx={{
+                    width: shippingFormData.is_shipping_add_same ? 700 : "100%",
+                    objectFit: "contain",
+                    marginRight: "20px",
+                  }}
                 />
+
                 <TextField
                   type="text"
                   name="address"
@@ -299,7 +310,13 @@ function CheckoutPage() {
                   error={checkboxClicked && shippingFormData.address === ""}
                   fullWidth
                   margin="normal"
+                  sx={{
+                    width: shippingFormData.is_shipping_add_same ? 700 : "100%",
+                    objectFit: "contain",
+                    marginRight: "20px",
+                  }}
                 />
+
                 <TextField
                   type="text"
                   name="city"
@@ -310,7 +327,13 @@ function CheckoutPage() {
                   error={checkboxClicked && shippingFormData.city === ""}
                   fullWidth
                   margin="normal"
+                  sx={{
+                    width: shippingFormData.is_shipping_add_same ? 700 : "100%",
+                    objectFit: "contain",
+                    marginRight: "20px",
+                  }}
                 />
+
                 <TextField
                   type="text"
                   name="zipCode"
@@ -321,6 +344,11 @@ function CheckoutPage() {
                   error={checkboxClicked && shippingFormData.zipCode === ""}
                   fullWidth
                   margin="normal"
+                  sx={{
+                    width: shippingFormData.is_shipping_add_same ? 700 : "100%",
+                    objectFit: "contain",
+                    marginRight: "20px",
+                  }}
                 />
 
                 <FormControlLabel
@@ -440,6 +468,10 @@ function CheckoutPage() {
         color="primary"
         className="checkout-button"
         disabled={!allFieldsFilled}
+        sx={{
+          marginLeft: "480px", // Add marginLeft with desired value
+          marginTop: "-65px",
+        }}
       >
         Proceed to Payment
       </Button>
