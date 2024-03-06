@@ -135,6 +135,15 @@ const Editinformation = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                label="Email"
+                type="email"
+                value={userData ? userData.email : ""}
+                fullWidth
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
                 label="Username"
                 type="text"
                 name="username"

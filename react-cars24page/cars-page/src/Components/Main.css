@@ -19,13 +19,12 @@
 .main-product-container {
   width: 80%;
   margin: auto;
-  
 }
 
 /* Grid container for displaying cars */
 .grid-container {
   display: grid;
-  grid-template-columns:  repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px; /* Adjusted minmax() function */
   height: 100%;
 }
@@ -106,6 +105,11 @@
   background-color: #f2f2f2; 
 }
 
+.buttons-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 @media only screen and (max-width: 768px) {
   .product-container {

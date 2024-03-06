@@ -95,6 +95,15 @@ const Navbar = () => {
           <>
             <div
               className="nav-link"
+              onClick={() => handleNavigation("/wishlist")}
+            >
+              Wishlist
+            </div>
+            <div className="nav-link" onClick={() => handleNavigation("/cart")}>
+              Cart
+            </div>
+            <div
+              className="nav-link"
               onClick={() => handleNavigation("/about")}
             >
               About Us

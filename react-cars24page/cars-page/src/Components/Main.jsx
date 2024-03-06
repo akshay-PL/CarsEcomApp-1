@@ -3,6 +3,9 @@ import axios from "axios";
 import axiosInstance from "./Axiosinterceptor.jsx"; // Import axiosInstance here
 import { useNavigate } from "react-router-dom";
 import "./Main.css";
+import wishlist_icon from "./Assets/wishlist_icon.png";
+import cart_icon from "./Assets/cart_icon.png";
+
 import withAuth from "./PrivateRoute";
 
 const Main = ({ test }) => {
@@ -78,6 +81,24 @@ const Main = ({ test }) => {
     setSearchTerm(event.target.value);
   };
 
+  // Function to handle wishlist button click
+  const handleWishlistClick = (car) => {
+    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    // Check if the car is already in the wishlist
+    if (!wishlist.find((item) => item.id === car.id)) {
+      wishlist.push({ ...car, image: getImageBase64(car.productimage) });
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      alert("Added to wishlist");
+    } else {
+      alert("Already in wishlist");
+    }
+  };
+
+  // Function to convert base64 image data to blob URL
+  const getImageBase64 = (base64String) => {
+    return `data:image/jpeg;base64,${base64String}`;
+  };
+
   // Filter cars based on search term
   const filteredCars = cars.filter((car) =>
     car.brand.toLowerCase().includes(searchTerm.toLowerCase())
@@ -141,9 +162,32 @@ const Main = ({ test }) => {
                   </button>
                 </div>
               ) : (
-                <button onClick={(event) => handleBuyClick(event, car)}>
-                  Buy Now
-                </button>
+                <div className="main-buttons-row">
+                  <div>
+                    <img
+                      className="main-wishlist-icon"
+                      src={wishlist_icon}
+                      alt="Wishlist"
+                      onClick={() => handleWishlistClick(car)}
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="main-buy-now-button"
+                      onClick={(event) => handleBuyClick(event, car)}
+                    >
+                      Buy Now
+                    </button>
+                  </div>
+                  <div>
+                    <img
+                      className="main-cart-icon"
+                      src={cart_icon}
+                      alt="Add to Cart"
+                      onClick={(event) => handleBuyClick(event, car)}
+                    />
+                  </div>
+                </div>
               )}
             </div>
           </div>

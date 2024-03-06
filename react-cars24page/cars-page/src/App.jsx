@@ -15,6 +15,8 @@ import Payment from "./Components/Payment.jsx";
 import Editinformation from "./Components/Editinformation.jsx";
 import Productstore from "./Components/productstore.jsx";
 import Editproduct from "./Components/Editproduct.jsx";
+import Wishlist from "./Components/Wishlist.jsx";
+import Cart from "./Components/Cart.jsx";
 
 const PrivateRoute = ({ element }) => {
   return element;
@@ -105,6 +107,22 @@ const App = () => {
             </Layout>
           }
           path="/productstore"
+        />
+        <Route
+          element={
+            <Layout>
+              <PrivateRoute element={<Wishlist />} />
+            </Layout>
+          }
+          path="/wishlist"
+        />
+        <Route
+          element={
+            <Layout>
+              <PrivateRoute element={<Cart />} />
+            </Layout>
+          }
+          path="/cart"
         />
         <Route
           element={
