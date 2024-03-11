@@ -4,8 +4,17 @@
 .search {
   margin-top: 10px;
   margin-bottom: 20px; /* Add margin at the bottom to separate it from other content */
+  position: relative;
 }
 
+.mic-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjust as needed */
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 999; /* Set z-index to ensure the icon appears above the input field */
+}
 /* Styles for the search bar input */
 .search input[type="text"] {
   width: 100%; /* Make the search bar input span the full width of its container */
@@ -92,7 +101,6 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s;
-  margin-top: auto; /* Push the button to the bottom of the grid item */
 }
 
 .grid-item button:hover {
@@ -105,11 +113,31 @@
   background-color: #f2f2f2; 
 }
 
-.buttons-row {
+.main-buttons-row {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
 }
+
+.main-wishlist-button {
+  position: absolute; /* Position the button absolutely */
+  top: 10px; /* Adjust the distance from the top */
+  left: 10px; /* Adjust the distance from the left */
+  z-index: 999; /* Set a higher z-index to ensure it appears above other elements */
+}
+
+.main-buy-now-button {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.main-cart-button {
+  position: absolute; /* Position the button absolutely */
+  bottom: 10px; /* Adjust the distance from the bottom */
+  right: 10px; /* Adjust the distance from the right */
+  z-index: 999; /* Set a higher z-index to ensure it appears above other elements */
+}
+
+
 
 @media only screen and (max-width: 768px) {
   .product-container {

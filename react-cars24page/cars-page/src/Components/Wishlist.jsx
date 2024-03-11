@@ -20,6 +20,11 @@ const Wishlist = () => {
     setWishlistItems(decodedWishlist);
   }, []); // Empty dependency array ensures useEffect runs only once on component mount
 
+  // Function to convert base64 image data to blob URL
+  const getImageBase64 = (base64String) => {
+    return `data:image/jpeg;base64,${base64String}`;
+  };
+
   // Function to handle click event for viewing car details
   const handleSeeDetails = (car) => {
     navigate(`/main/details/${car.id}`, {
@@ -40,11 +45,6 @@ const Wishlist = () => {
     updatedWishlist.splice(index, 1);
     setWishlistItems(updatedWishlist);
     localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-  };
-
-  // Function to convert base64 image data to blob URL
-  const getImageBase64 = (base64String) => {
-    return `data:image/jpeg;base64,${base64String}`;
   };
 
   return (

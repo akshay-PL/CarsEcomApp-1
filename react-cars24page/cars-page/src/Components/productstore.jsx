@@ -103,7 +103,7 @@ const ProductStore = () => {
   };
 
   return (
-    <div className="product-container">
+    <div className="add-product-container">
       <button
         onClick={() => navigate("/main")}
         className="back-to-main-button"

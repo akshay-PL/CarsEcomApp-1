@@ -469,8 +469,8 @@ function CheckoutPage() {
         className="checkout-button"
         disabled={!allFieldsFilled}
         sx={{
-          marginLeft: "480px", // Add marginLeft with desired value
-          marginTop: "-65px",
+          marginLeft: "744px", // Add marginLeft with desired value
+          marginTop: "-5px",
         }}
       >
         Proceed to Payment

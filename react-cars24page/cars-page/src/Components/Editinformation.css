@@ -1,0 +1,11 @@
+.user-profile-icon{ 
+    margin-top: 20px;
+    width: 250px;
+    height: 250px;
+    overflow: hidden;
+    border: 1px solid #ccc; /* Optional: Add a border for visual clarity */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    border-radius: 5px; /* Optional: Add border radius for rounded corners */
+  
+}
+

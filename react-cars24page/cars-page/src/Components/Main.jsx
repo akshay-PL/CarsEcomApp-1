@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./Main.css";
 import wishlist_icon from "./Assets/wishlist_icon.png";
 import cart_icon from "./Assets/cart_icon.png";
+import mic_icon from "./Assets/mic_icon.png";
 
 import withAuth from "./PrivateRoute";
 
@@ -52,6 +53,10 @@ const Main = ({ test }) => {
     navigate(`/editproduct/${car.id}`); // Navigate to the editproduct page with car id
   };
 
+  const handleMicClick = () => {
+    alert("Currently not functional. Update coming soon!");
+  };
+
   // Function to handle click event for deleting a car (for admin)
   const handleDeleteClick = async (id) => {
     const confirmDelete = window.confirm(
@@ -79,6 +84,22 @@ const Main = ({ test }) => {
   // Function to handle search term change
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  // Function to handle adding item to cart
+  const handleAddToCart = (car) => {
+    const cart = JSON.parse(sessionStorage.getItem("cart")) || [];
+
+    // Check if the car is already in the cart
+    const isAlreadyInCart = cart.some((item) => item.id === car.id);
+
+    if (isAlreadyInCart) {
+      alert("This item is already in the cart.");
+    } else {
+      cart.push(car);
+      sessionStorage.setItem("cart", JSON.stringify(cart));
+      alert("Added to Cart");
+    }
   };
 
   // Function to handle wishlist button click
@@ -113,6 +134,12 @@ const Main = ({ test }) => {
           placeholder={"Seach here.."}
           value={searchTerm}
           onChange={handleSearchChange} // Add onChange event handler
+        />
+        <img
+          src={mic_icon}
+          alt="Mic"
+          className="mic-icon"
+          onClick={handleMicClick} // Add onClick event handler
         />
       </div>
       {/* Display cars in a grid layout */}
@@ -163,28 +190,25 @@ const Main = ({ test }) => {
                 </div>
               ) : (
                 <div className="main-buttons-row">
-                  <div>
+                  <div className="main-wishlist-button">
                     <img
-                      className="main-wishlist-icon"
                       src={wishlist_icon}
                       alt="Wishlist"
                       onClick={() => handleWishlistClick(car)}
                     />
                   </div>
-                  <div>
-                    <button
-                      className="main-buy-now-button"
-                      onClick={(event) => handleBuyClick(event, car)}
-                    >
+                  <div className="main-buy-now-button">
+                    {/* Add class to the div */}
+                    <button onClick={(event) => handleBuyClick(event, car)}>
                       Buy Now
                     </button>
                   </div>
-                  <div>
+                  <div className="main-cart-button">
+                    {/* Add class to the div */}
                     <img
-                      className="main-cart-icon"
                       src={cart_icon}
                       alt="Add to Cart"
-                      onClick={(event) => handleBuyClick(event, car)}
+                      onClick={() => handleAddToCart(car)}
                     />
                   </div>
                 </div>

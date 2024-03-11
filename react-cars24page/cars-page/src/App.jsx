@@ -17,6 +17,7 @@ import Productstore from "./Components/productstore.jsx";
 import Editproduct from "./Components/Editproduct.jsx";
 import Wishlist from "./Components/Wishlist.jsx";
 import Cart from "./Components/Cart.jsx";
+import Buynowall from "./Buynowall.jsx";
 
 const PrivateRoute = ({ element }) => {
   return element;
@@ -123,6 +124,14 @@ const App = () => {
             </Layout>
           }
           path="/cart"
+        />
+        <Route
+          element={
+            <Layout>
+              <PrivateRoute element={<Buynowall />} />
+            </Layout>
+          }
+          path="/buynowall"
         />
         <Route
           element={

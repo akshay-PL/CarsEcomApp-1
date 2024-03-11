@@ -1,0 +1,72 @@
+.buyallcontainer {
+  display: flex;
+  justify-content: space-between;
+  position: relative; /* Add position relative to the container */
+  height: 100%;
+}
+
+.buyall-info-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Adjust the width to accommodate the entire content */
+}
+
+.buyall-shipping-billing-container {
+  display: flex;
+  justify-content: space-between; /* Distribute the shipping and billing info evenly */
+  width: 100%;
+}
+
+.buyall-shipping-info,
+.buyall-billing-info {
+  width: 48%; /* Adjust the width to leave space for margins */
+}
+
+.buyall-product-container {
+  max-height: 400px;
+  overflow-y: auto;
+  width: 35%;
+}
+
+.buyall-product-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.buyall-product-image {
+  height: 100px;
+  margin-right: 20px;
+  width: 250px;
+}
+
+.buyall-product-image img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.buyall-product-info {
+  flex-grow: 1;
+}
+
+.buyall-total-price {
+  position: absolute; /* Position the total price absolutely */
+  bottom: 0; /* Adjust the bottom position */
+  left: 0; /* Adjust the left position */
+}
+
+.buyall-payment{
+  position: absolute; /* Position the total price absolutely */
+  bottom: 0; /* Adjust the bottom position */
+  left: 0; /* Adjust the left position */
+margin-left: 10px;
+margin-bottom: -40px;
+}
+
+.buyall-ordersummary{
+  position: absolute; /* Position the total price absolutely */
+margin-left: 40px;
+margin-bottom: -40px;
+
+}

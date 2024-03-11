@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import withAuth from "./PrivateRoute";
 import axios from "axios";
+import "./Editproduct.css"; // Import your independent CSS module
+
 import { useParams } from "react-router-dom";
 
 const Editproduct = () => {
@@ -42,7 +44,9 @@ const Editproduct = () => {
     setFile(file); // Store the selected file
     const reader = new FileReader();
     reader.onloadend = () => {
-      setBase64Image(reader.result);
+      const base64String = reader.result.split(",")[1];
+      setBase64Image(base64String);
+      setEditedDetails({ ...editedDetails, productimage: base64String }); // Update productimage field
     };
     reader.readAsDataURL(file);
   };
@@ -50,14 +54,15 @@ const Editproduct = () => {
   const submitEdit = async () => {
     try {
       const updatedDetails = {
-        brand: editedDetails.editedBrand || carDetails.brand,
-        type: editedDetails.editedType || carDetails.type,
-        model: editedDetails.editedModel || carDetails.model,
-        year: editedDetails.editedYear || carDetails.year,
-        price: editedDetails.editedPrice || carDetails.price,
-        stock_quantity: editedDetails.editedStock || carDetails.stock_quantity,
-        description: editedDetails.editedDescription || carDetails.description,
-        productimage: editedDetails.editimage || carDetails.productimage,
+        brand: editedDetails.brand || carDetails.brand,
+        type: editedDetails.type || carDetails.type,
+        model: editedDetails.model || carDetails.model,
+        year: editedDetails.year || carDetails.year,
+        price: editedDetails.price || carDetails.price,
+        stock_quantity:
+          editedDetails.stock_quantity || carDetails.stock_quantity,
+        description: editedDetails.description || carDetails.description,
+        productimage: editedDetails.productimage || carDetails.productimage,
       };
 
       const response = await axios.put(
@@ -73,86 +78,90 @@ const Editproduct = () => {
     }
   };
 
-  const handleConvert = () => {
-    if (base64Image.startsWith("data:")) {
-      const base64WithoutPrefix = base64Image.split(",")[1];
-      setBase64Image(base64WithoutPrefix);
-    }
-  };
-
   return (
-    <div>
+    <div className="editproduct-container">
       {carDetails ? (
-        <div>
-          <p>Brand: {carDetails.brand}</p>
-          <p>Type: {carDetails.type}</p>
-          <p>Model: {carDetails.model}</p>
-          <p>Year: {carDetails.year}</p>
-          <p>Price: {carDetails.price}</p>
-          <p>Stock: {carDetails.stock_quantity}</p>
-          <p>Description: {carDetails.description}</p>
-          <p>Image: {carDetails.productimage}</p>
+        <div className="editproduct-details">
+          <p className="editproduct-item">Brand: {carDetails.brand}</p>
+          <p className="editproduct-item">Type: {carDetails.type}</p>
+          <p className="editproduct-item">Model: {carDetails.model}</p>
+          <p className="editproduct-item">Year: {carDetails.year}</p>
+          <p className="editproduct-item">Price: {carDetails.price}</p>
+          <p className="editproduct-item">Stock: {carDetails.stock_quantity}</p>
+          <p className="editproduct-item">
+            Description: {carDetails.description}
+          </p>
           <input
             type="text"
-            name="editedBrand"
+            name="brand"
+            className="editproduct-input"
             placeholder="Edit Brand"
             onChange={handleInputChange}
+            value={editedDetails.brand}
           />
           <input
             type="text"
-            name="editedType"
+            name="type"
+            className="editproduct-input"
             placeholder="Edit Type"
             onChange={handleInputChange}
+            value={editedDetails.type}
           />
           <input
             type="text"
-            name="editedModel"
+            name="model"
+            className="editproduct-input"
             placeholder="Edit Model"
             onChange={handleInputChange}
+            value={editedDetails.model}
           />
           <input
             type="text"
-            name="editedYear"
+            name="year"
+            className="editproduct-input"
             placeholder="Edit Year"
             onChange={handleInputChange}
+            value={editedDetails.year}
           />
           <input
             type="text"
-            name="editedPrice"
+            name="price"
+            className="editproduct-input"
             placeholder="Edit Price"
             onChange={handleInputChange}
+            value={editedDetails.price}
           />
           <input
             type="text"
-            name="editedStock"
+            name="stock_quantity"
+            className="editproduct-input"
             placeholder="Edit Stock"
             onChange={handleInputChange}
+            value={editedDetails.stock_quantity}
           />
           <input
             type="text"
-            name="editedDescription"
+            name="description"
+            className="editproduct-input"
             placeholder="Edit Description"
             onChange={handleInputChange}
+            value={editedDetails.description}
           />
           <input
             type="text"
-            name="editimage"
+            name="productimage"
+            className="editproduct-input"
             placeholder="Edit Image"
             onChange={handleInputChange}
+            value={editedDetails.productimage}
           />
           <input type="file" name="productimage" onChange={handleFileChange} />
-          <button onClick={handleConvert}>Convert</button>
-          <textarea
-            value={base64Image}
-            rows="10"
-            cols="50"
-            placeholder="Base64 Image"
-            readOnly
-          ></textarea>
-          <button onClick={submitEdit}>Submit Edit</button>
+          <button onClick={submitEdit} className="editproduct-button">
+            Submit Edit
+          </button>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p className="editproduct-loading">Loading...</p>
       )}
     </div>
   );

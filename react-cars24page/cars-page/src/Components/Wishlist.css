@@ -1,6 +1,7 @@
 .wishlist-container {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
+  height: 100%;
 }
 
 .wishlist-items ul {
@@ -38,22 +39,36 @@
 .wishlist-buttons button {
   margin-left: 10px;
   padding: 5px 10px;
-  border: none;
+  border: 1px solid; /* Set border to solid */
   border-radius: 5px;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Add transition for smooth effect */
 }
-
 .wishlist-view-details-button {
-  background-color: #007bff;
-  color: #fff;
+  background-color: transparent; /* Set background color to transparent */
+  border-color: #007bff; /* Set border color */
+  color: #007bff; /* Set text color */
 }
 
 .wishlist-buy-now-button {
-  background-color: #28a745;
-  color: #fff;
+  background-color: transparent; /* Set background color to transparent */
+  border-color: #28a745; /* Set border color */
+  color: #28a745; /* Set text color */
 }
 
 .wishlist-remove-button {
-  background-color: #dc3545;
-  color: #fff;
+  background-color: transparent; /* Set background color to transparent */
+  border-color: #dc3545; /* Set border color */
+  color: #dc3545; /* Set text color */
 }
+
+/* Reset background color on hover */
+.wishlist-view-details-button:hover,
+.wishlist-buy-now-button:hover,
+.wishlist-remove-button:hover {
+  background-color: inherit;
+  transform: scale(1.01); /* Scale up by 5% on hover */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Add a box shadow */
+}
+
+
